@@ -30,8 +30,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Version 1.0
  */
 public class EasyExcelUtil {
-    
-    
+
+
     /**
      * 导出 Excel ：一个 sheet，带表头.
      *
@@ -60,20 +60,20 @@ public class EasyExcelUtil {
         HorizontalCellStyleStrategy horizontalCellStyleStrategy = new HorizontalCellStyleStrategy(headWriteCellStyle, contentWriteCellStyle);
         // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
         ExcelWriter excelWriter = EasyExcel.write(filepath).excelType(ExcelTypeEnum.XLSX).registerWriteHandler(horizontalCellStyleStrategy).build();
-        
+
         WriteSheet sheetDetail = EasyExcel.writerSheet(0, "详细结果").head(SimilarityOutEntity.class).build();
         excelWriter.write(detailList, sheetDetail);
-        
+
         WriteSheet sheetMax = EasyExcel.writerSheet(1, "简略结果").head(SimilarityOutEntity.class).build();
         excelWriter.write(sortMaxResultList, sheetMax);
-        
-        WriteSheet sheetPlagiarize = EasyExcel.writerSheet(2, "抄袭名单").head(PlagiarizeEntity.class).build();
+
+        WriteSheet sheetPlagiarize = EasyExcel.writerSheet(2, "超过相似度阈值名单").head(PlagiarizeEntity.class).build();
         excelWriter.write(plagiarizeEntityList, sheetPlagiarize);
-        
+
         excelWriter.finish();
-        
+
     }
-    
-    
+
+
 }
 

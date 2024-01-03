@@ -101,7 +101,7 @@ public class FileUtils {
         }
         return charset;
     }
-    
+
     /**
      * 读取Word文档中的文字值
      *
@@ -130,7 +130,7 @@ public class FileUtils {
         }
         return buffer;
     }
-    
+
     /**
      * 通过路径获取文件的内容，这个方法因为用到了字符串作为载体，为了正确读取文件（不乱码），只能读取文本文件，安全方法！
      */
@@ -172,7 +172,7 @@ public class FileUtils {
 //		System.err.println("txt:"+data);
         return data;
     }
-    
+
     /**
      * 判断是Word还是txt；判断文件是否存在，调用本类中的其余方法读取文档文字内容
      *
@@ -198,20 +198,20 @@ public class FileUtils {
         }
         return SB;
     }
-    
+
     public static void main(String[] args) {
         String str1 = null;
         String str2 = null;
-        
-        String filePath1 = "F:\\桌面\\查重图片\\今年\\文档1 - 副本.doc";
-        String filePath2 = "F:\\桌面\\查重图片\\今年\\文档1.docx";
-        
+
+        String filePath1 = "F:\\桌面\\相似度比对图片\\今年\\文档1 - 副本.doc";
+        String filePath2 = "F:\\桌面\\相似度比对图片\\今年\\文档1.docx";
+
         str1 = readFile(filePath1);
         str2 = readFile(filePath2);
-        
+
         List<String> list1 = IKUtils.segStr(str1, false);
         List<String> list2 = IKUtils.segStr(str2, false);
-        
+
         System.out.println(list1);
         System.out.println(list2);
     }

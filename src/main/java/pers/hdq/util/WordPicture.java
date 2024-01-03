@@ -26,11 +26,11 @@ import java.util.List;
  * @date 2019年7月1日 下午9:44:35
  */
 public class WordPicture {
-    
+
     public static List<String> getWordPicture(DocFileEntity docEntity) {
         List<String> pictureHashList = new ArrayList<>();
         File file = new File(docEntity.getAbsolutePath());
-        
+
         InputStream is = null;
         HWPFDocument doc = null;
         XWPFDocument docx = null;
@@ -79,7 +79,7 @@ public class WordPicture {
         }
         return pictureHashList;
     }
-    
+
     /**
      * 删除指定文件夹下所有文件
      *
@@ -100,14 +100,14 @@ public class WordPicture {
             }
         }
     }
-    
+
     public static void main(String[] args) {
-        String path = "F:\\桌面\\查重图片\\今年\\文档1.docx";
-        
+        String path = "F:\\桌面\\相似度比对图片\\今年\\文档1.docx";
+
         DocFileEntity docEntity = DocFileEntity.builder()
                 .fileName("文档")
                 .absolutePath(path).build();
         getWordPicture(docEntity);
-        
+
     }
 }

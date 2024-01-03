@@ -41,7 +41,7 @@ public class CompareOptimize {
      * 本机CPU核数
      **/
     final static int CORE_NUM = Runtime.getRuntime().availableProcessors();
-    
+
     /**
      * 文件读取线程池，核心线程数=2CPU核数，最大线程数2Cpu核数
      **/
@@ -57,7 +57,7 @@ public class CompareOptimize {
             new LinkedTransferQueue<>(),
             new ThreadFactoryBuilder().setNameFormat("single-pool-%d").build(),
             new ThreadPoolExecutor.CallerRunsPolicy());
-    
+
     /**
      * 文档比较线程池，核心线程数=CPU核数，最大线程数Cpu核数
      **/
@@ -65,7 +65,7 @@ public class CompareOptimize {
             new LinkedTransferQueue<>(),
             new ThreadFactoryBuilder().setNameFormat("compare-pool-%d").build(),
             new ThreadPoolExecutor.CallerRunsPolicy());
-    
+
    /*
    corePoolSize：当在方法execute(Runnable)中提交了一个新任务，并且运行的线程少于 corePoolSize 时，即使其他工作线程处于空闲状态，也会创建一个新线程来处理该请求。
    如果运行的线程数多于 corePoolSize 但少于 maximumPoolSize，则仅当队列已满时才会创建新线程
@@ -90,32 +90,32 @@ public class CompareOptimize {
             new ThreadPoolExecutor.DiscardPolicy() //不执行新任务，也不抛出异常
             new ThreadPoolExecutor.DiscardOldestPolicy() //丢弃队列最前面的任务，然后重新提交被拒绝的任务。
     */
-    
-    
+
+
     /**
      * 将小数格式化为百分数
      **/
     static DecimalFormat numFormat = new DecimalFormat("0.00%");
-    
+
     public static void main(String[] args) throws Exception {
-        /*  需要查重的路径*/
-        String path = "F:\\桌面\\查重图片";
+        /*  需要相似度比对的路径*/
+        String path = "F:\\桌面\\相似度比对图片";
         /*  获取开始时间*/
         long startTime = System.currentTimeMillis();
         String excelPath =
-                path + "\\查重结果".concat("智能分词-" + "图片查重-模式2").concat(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())).concat(".xlsx");
+                path + "\\相似度比对结果".concat("智能分词-" + "图片相似度比对-模式2").concat(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())).concat(".xlsx");
         getSimilarityMode1(path, true, false, 0.5, excelPath, true);
         /*  获取结束时间*/
         long endTime = System.currentTimeMillis();
         /*  输出程序运行时间*/
         System.out.println("所有文档相似度计算完成，共耗时：" + (endTime - startTime) / 1000 + "s");
     }
-    
-    
+
+
     /**
      * 递归遍历入参path目录下所有文档，并两两比较相似度
      *
-     * @param path           需要查重的文件夹
+     * @param path           需要相似度比对的文件夹
      * @param ikFlag         是否打开智能分词，为false显示最小粒度分词结果
      * @param pictureSimFlag 是否计算文档中图片相似度，为是会增加准确率，但会极大增加运算时间
      * @param threshold      相似度阈值
@@ -126,7 +126,7 @@ public class CompareOptimize {
      **/
     public static void getSimilarityMode1(String path, Boolean ikFlag, Boolean pictureSimFlag,
                                           Double threshold, String excelPath, Boolean multithreadingFlag) throws Exception {
-        
+
         System.out.println("开始扫描文档,当前时间:" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
         /*  递归遍历目录；获取所有文档绝对路径*/
         List<String> allDocAbsolutePath = recursionWord(path);
@@ -139,7 +139,7 @@ public class CompareOptimize {
         if (!multithreadingFlag) {
             threadPool = singleThreadPool;
         }
-        
+
         CountDownLatch cdl = new CountDownLatch(allDocAbsolutePath.size());
         //遍历处理所有文件
         for (String s : allDocAbsolutePath) {
@@ -154,7 +154,7 @@ public class CompareOptimize {
             //执行线程
             threadPool.execute(run);
         }
-        
+
         //线程执行完后再执行主线程
         try {
             cdl.await();
@@ -162,8 +162,8 @@ public class CompareOptimize {
             System.out.println("阻塞子线程中断异常:" + e);
         }
         System.out.println("文档读取完成,开始计算相似度,共计" + allDocAbsolutePath.size() + "个文件,需计算" + sumCount + "次,当前时间:" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
-        
-        
+
+
         int detailSize = sumCount;
         if (sumCount > 100000) {
             detailSize = 1;
@@ -173,7 +173,7 @@ public class CompareOptimize {
         // sheet2中简略结果数据
         List<SimilarityOutEntity> sortMaxResultList =
                 Collections.synchronizedList(new ArrayList<>(allDocAbsolutePath.size()));
-        // sheet3中抄袭名单
+        // sheet3中超过相似度阈值名单
         List<PlagiarizeEntity> plagiarizeEntityList = Collections.synchronizedList(new ArrayList<>());
         //选择线程类型
         ExecutorService comThreadPool = compareThreadPool;
@@ -201,7 +201,7 @@ public class CompareOptimize {
         } catch (InterruptedException e) {
             System.out.println("阻塞子线程中断异常:" + e);
         }
-        
+
         if (detailList.isEmpty()) {
             SimilarityOutEntity similarityOutEntity =
                     SimilarityOutEntity.builder().judgeResult("本次比较详细结果将超过" + sumCount + "行,防止excel崩溃,此次详细结果不输出,请参考简略结果").build();
@@ -210,7 +210,7 @@ public class CompareOptimize {
         // 排序并导出excel
         sortAndImportExcel(excelPath, detailList, sortMaxResultList, plagiarizeEntityList);
     }
-    
+
     /**
      * 模式1 外层循环调用
      *
@@ -240,7 +240,7 @@ public class CompareOptimize {
             SimilarityOutEntity cellSimEntity = comparingTwoDoc(docLeft, docRight, pictureSimFlag, threshold, plagiarizeEntityList);
             docLeftAllSimList.add(cellSimEntity);
         }
-        
+
         if (sumCount <= 100000) {
             // 相似度实体加到详细结果中
             detailList.addAll(docLeftAllSimList);
@@ -263,38 +263,38 @@ public class CompareOptimize {
             }
         }
     }
-    
+
     /**
      * 将几个sheet表数据排序去重并输出excel
      *
      * @param excelPath            excel绝对路径
      * @param detailList           详细名单
      * @param sortMaxResultList    简略名单
-     * @param plagiarizeEntityList 抄袭名单
+     * @param plagiarizeEntityList 超过相似度阈值名单
      *
      * @author HuDaoquan
      * @date 2022/6/15 14:14
      **/
     private static void sortAndImportExcel(String excelPath, List<SimilarityOutEntity> detailList, List<SimilarityOutEntity> sortMaxResultList, List<PlagiarizeEntity> plagiarizeEntityList) {
-        
+
         // 排序详细结果
         detailList = detailList.stream().sorted(Comparator.comparing(SimilarityOutEntity::getWeightedSimDouble, Comparator.reverseOrder())).collect(Collectors.toList());
         // 排序简略结果
         sortMaxResultList = sortMaxResultList.stream().sorted(Comparator.comparing(SimilarityOutEntity::getWeightedSimDouble, Comparator.reverseOrder())).collect(Collectors.toList());
-        // 去重抄袭名单
+        // 去重超过相似度阈值名单
         plagiarizeEntityList = plagiarizeEntityList.stream().collect(
                 Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(PlagiarizeEntity::getDocName))), ArrayList::new));
-        
-        
+
+
         System.out.println("相似度计算完成,开始导出excel文件,当前时间:" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
         EasyExcelUtil.writeExcel(excelPath, detailList, sortMaxResultList, plagiarizeEntityList);
         System.err.println("相似度计算结果已存入：" + excelPath);
     }
-    
+
     /**
-     * 查重方式2：今年的文档两两比较，今年的与往年的比较；往年的互相之间不需要比较
+     * 相似度比对方式2：今年的文档两两比较，今年的与往年的比较；往年的互相之间不需要比较
      *
-     * @param path           待查重文件夹
+     * @param path           待相似度比对文件夹
      * @param ikFlag         ik智能分词开关
      * @param pictureSimFlag 图片相似度开关
      * @param threshold      重复度判定阈值
@@ -313,7 +313,7 @@ public class CompareOptimize {
         //总计算次数
         int sumCount =
                 (thisYearDocAbsolutePath.size() - 1) * thisYearDocAbsolutePath.size() / 2 + thisYearDocAbsolutePath.size() * historyYearDocAbsolutePath.size();
-        
+
         // 存储今年文档
         List<DocFileEntity> thisYearDocEntityList =
                 Collections.synchronizedList(new ArrayList<>(thisYearDocAbsolutePath.size()));
@@ -342,7 +342,7 @@ public class CompareOptimize {
             //执行线程
             threadPool.execute(run);
         }
-        
+
         CountDownLatch historyCdl = new CountDownLatch(historyYearDocAbsolutePath.size());
         // 遍历处理所有往年文档
         for (String s : historyYearDocAbsolutePath) {
@@ -358,8 +358,8 @@ public class CompareOptimize {
             //执行线程
             threadPool.execute(run);
         }
-        
-        
+
+
         //线程执行完后再执行主线程
         try {
             thisYearCdl.await();
@@ -369,7 +369,7 @@ public class CompareOptimize {
         }
         System.out.println("今年文档数量:" + thisYearDocEntityList.size());
         System.out.println("往年文档数量:" + historyYearDocEntityList.size());
-        
+
         System.out.println("开始计算相似度,需计算" + sumCount + "次,当前时间:" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
         // 详情名单初始长度
         int detailSize = sumCount;
@@ -381,11 +381,11 @@ public class CompareOptimize {
         // sheet2中简略结果数据
         List<SimilarityOutEntity> sortMaxResultList = Collections.synchronizedList(new ArrayList<>(
                 thisYearDocEntityList.size()));
-        // sheet3中抄袭名单
+        // sheet3中超过相似度阈值名单
         List<PlagiarizeEntity> plagiarizeEntityList = Collections.synchronizedList(new ArrayList<>());
-        
+
         CountDownLatch compareCdl = new CountDownLatch(thisYearDocEntityList.size());
-        
+
         // 冒泡排序原理遍历比较文件，遍所有文档信息冒泡原理两两比较文档相似度
         for (int i = 0; i < thisYearDocEntityList.size(); i++) {
             int finalI = i;
@@ -415,7 +415,7 @@ public class CompareOptimize {
         }
         sortAndImportExcel(excelPath, detailList, sortMaxResultList, plagiarizeEntityList);
     }
-    
+
     private static void getFinishDocCountMode2(Boolean pictureSimFlag, Double threshold, int sumCount,
                                                List<DocFileEntity> thisYearDocEntityList, List<DocFileEntity> historyYearDocEntityList, List<SimilarityOutEntity> detailList, List<SimilarityOutEntity> sortMaxResultList, List<PlagiarizeEntity> plagiarizeEntityList, int i) {
         // 文档1与其他被比较的所有文档的相似度
@@ -438,7 +438,7 @@ public class CompareOptimize {
             SimilarityOutEntity cellSimEntity = comparingTwoDoc(docLeft, docRight, pictureSimFlag, threshold, plagiarizeEntityList);
             docLeftAllSimList.add(cellSimEntity);
         }
-        
+
         if (sumCount <= 100000) {
             detailList.addAll(docLeftAllSimList);
         }
@@ -458,7 +458,7 @@ public class CompareOptimize {
             }
         }
     }
-    
+
     /**
      * 比较两个文档的相似度，返回相似度实体
      *
@@ -466,7 +466,7 @@ public class CompareOptimize {
      * @param docRight             文档2
      * @param pictureSimFlag       图片相似度
      * @param threshold            相似度判定阈值
-     * @param plagiarizeEntityList 抄袭名单
+     * @param plagiarizeEntityList 超过相似度阈值名单
      *
      * @return {@link SimilarityOutEntity} 计算得到的相似度实体
      * @author HuDaoquan
@@ -474,7 +474,7 @@ public class CompareOptimize {
      **/
     public static SimilarityOutEntity comparingTwoDoc(DocFileEntity docLeft, DocFileEntity docRight, Boolean pictureSimFlag,
                                                       Double threshold, List<PlagiarizeEntity> plagiarizeEntityList) {
-        
+
         /*  余弦相似度*/
         double conSim = CosineSimilarity.sim(docLeft.getWordList(), docRight.getWordList());
         // // 杰卡德相似度
@@ -520,14 +520,14 @@ public class CompareOptimize {
             /*  将文本相似度结果平方，，调整相似度*/
             weightedSim = (Math.pow(textSim, 1.5) + avgPicSim);
         }
-        
+
         if (weightedSim > threshold || jaccardSim > 0.90 || conSim > 0.90 || avgPicSim > 0.90) {
-            judgeResult = "疑似抄袭";
-            //抄袭名单
+            judgeResult = "疑似超过相似度阈值";
+            //超过相似度阈值名单
             plagiarizeEntityList.add(PlagiarizeEntity.builder().docName(docLeft.getAbsolutePath()).build());
             plagiarizeEntityList.add(PlagiarizeEntity.builder().docName(docRight.getAbsolutePath()).build());
         }
-        
+
         return SimilarityOutEntity.builder()
                 .judgeResult(judgeResult)
                 .conSim(numFormat.format(conSim))
@@ -538,10 +538,10 @@ public class CompareOptimize {
                 .rightDocName(docRight.getAbsolutePath())
                 .weightedSimDouble(weightedSim)
                 .build();
-        
-        
+
+
     }
-    
+
     /**
      * 传入文档绝对路径，返回文档实体（绝对路径、图片路径、分词结果、图片hash结果等）
      *
@@ -573,7 +573,7 @@ public class CompareOptimize {
         }
         return docEntity;
     }
-    
+
     /**
      * 遍历文件夹中的文本文件
      *
@@ -605,5 +605,5 @@ public class CompareOptimize {
         }
         return allDocAbsolutePathList;
     }
-    
+
 }

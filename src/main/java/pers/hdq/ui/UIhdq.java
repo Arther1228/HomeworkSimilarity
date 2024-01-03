@@ -32,17 +32,17 @@ public class UIhdq extends JPanel {
     private JCheckBox picBox;
     // private JCheckBox sortBox;
     private static JTextField textPath;
-    
+
     private Double simThre;
     private JComboBox<String> comboBox;
-    // 查重模式 1、所有文档两两比较；2、今年与往年比较（要求所选路径中必须有一个”今年“文件夹、一个“往年”文件夹）
+    // 相似度比对模式 1、所有文档两两比较；2、今年与往年比较（要求所选路径中必须有一个”今年“文件夹、一个“往年”文件夹）
     private JComboBox<String> queryModeBox;
     private JComboBox<String> multithreadingBox;
-    
+
     public UIhdq() {
         initComponents();
     }
-    
+
     private void initComponents() {
         JPanel panel1 = new JPanel();
         panel1.setToolTipText("");
@@ -50,13 +50,13 @@ public class UIhdq extends JPanel {
         docLocationTextArea = new JTextArea();
         Font x = new Font("仿宋", 0, 15);
         docLocationTextArea.setFont(x);
-        docLocationTextArea.setToolTipText("查重结果");
+        docLocationTextArea.setToolTipText("相似度比对结果");
         JLabel label1 = new JLabel();
         label1.setFont(new Font("仿宋", Font.BOLD, 14));
         label1.setToolTipText("");
         JPanel tableShowJPanel = new JPanel();
         Border border = new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(
-                new javax.swing.border.EmptyBorder(0, 0, 0, 0), "使用中如有疑问，请联系1455523026@qq.com",
+                new javax.swing.border.EmptyBorder(0, 0, 0, 0), "",
                 javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.BOTTOM,
                 new java.awt.Font("仿宋", java.awt.Font.BOLD, 15), java.awt.Color.red), getBorder());
         setBorder(border);
@@ -81,7 +81,7 @@ public class UIhdq extends JPanel {
             panel1.add(scrollPane1);
             scrollPane1.setBounds(10, 30, 750, 230);// 结果框大小
             // ---- label1 ----
-            label1.setText("查重结果：");
+            label1.setText("相似度比对结果：");
             panel1.add(label1);
             label1.setBounds(10, 0, 87, 25);
             { // compute preferred size
@@ -122,10 +122,10 @@ public class UIhdq extends JPanel {
         txtpnrnrncsvexcelrn.setForeground(Color.BLACK);
         txtpnrnrncsvexcelrn.setFont(new Font("仿宋", Font.BOLD, 16));
         txtpnrnrncsvexcelrn.setEditable(false);
-        txtpnrnrncsvexcelrn.setText("使用说明：\r\n  1.查重前请将待查重文档放入文件夹中，然后点击“选择查重路径”按钮选择该文件夹，点击“开始查重”按钮，开始查重；" +
-                "\n  2.查重模式1:将对所选路径下所有文档两两比较;  模式2:所选路径中必须有一个”今年“、一个“往年”目录分别存今年和往年文档,今年文档会两两比较（相比模式1少了往年文档互相比较的过程)；" +
-                "\n  3.查重结果存储于所选文件夹中以“查重结果”开头的Excel表格中；" +
-                "\n  4.“简略结果”表列出每个文件及其最相似文件，详细结果表列出全部结果；抄袭名单会列出相似度超过在选定阈值的文件名。");
+        txtpnrnrncsvexcelrn.setText("使用说明：\r\n  1.相似度比对前请将待相似度比对文档放入文件夹中，然后点击“选择比对路径”按钮选择该文件夹，点击“开始相似度比对”按钮，开始比对；" +
+                "\n  2.相似度比对模式1:将对所选路径下所有文档两两比较;  " +
+                "\n  3.相似度比对结果存储于所选文件夹中以“相似度比对结果”开头的Excel表格中；" +
+                "\n  4.“简略结果”表列出每个文件及其最相似文件，详细结果表列出全部结果；超过相似度阈值名单会列出相似度超过在选定阈值的文件名。");
         txtpnrnrncsvexcelrn.setToolTipText("使用说明");
         txtpnrnrncsvexcelrn.setBounds(10, 55, 559, 186);
         tableShowJPanel.add(txtpnrnrncsvexcelrn);
@@ -136,7 +136,7 @@ public class UIhdq extends JPanel {
         textPath.setBounds(145, 13, 425, 32);
         tableShowJPanel.add(textPath);
         textPath.setColumns(10);
-        JLabel label = new JLabel("您选择的查重路径是：");
+        JLabel label = new JLabel("您选择的相似度比对路径是：");
         label.setFont(new Font("仿宋", Font.PLAIN, 14));
         label.setBounds(10, 16, 145, 29);
         tableShowJPanel.add(label);
@@ -160,7 +160,7 @@ public class UIhdq extends JPanel {
             }
         });
         // ---- searchButton ----
-        searchButton.setText("选择查重路径");
+        searchButton.setText("选择比对路径");
         JPanel panel2 = new JPanel();
         panel2.setBounds(608, 74, 132, 193);
         tableShowJPanel.add(panel2);
@@ -172,13 +172,13 @@ public class UIhdq extends JPanel {
             wordBox.setToolTipText("取消勾选会将每个词语分成最小颗粒。如：“笔记本电脑”=【笔记本电脑, 笔记本, 笔记, 电脑】，提高精度");
             wordBox.setSelected(true);
             panel2.add(wordBox);
-            picBox = new JCheckBox("打开图片查重");
+            picBox = new JCheckBox("打开图片相似度比对");
             picBox.setFont(new Font("仿宋", Font.PLAIN, 16));
             picBox.setToolTipText("勾选后会对文档中图片进行比较，但会严重降低比较速度，当图片过多时计算会很慢");
             panel2.add(picBox);
             // sortBox = new JCheckBox("打开排序输出");
             // sortBox.setFont(new Font("仿宋", Font.PLAIN, 16));
-            // sortBox.setToolTipText("勾选后输出查重结果会按相似度降序排序！会增加运算时间,不建议勾选");
+            // sortBox.setToolTipText("勾选后输出相似度比对结果会按相似度降序排序！会增加运算时间,不建议勾选");
             // panel2.add(sortBox);
         }
         comboBox = new JComboBox<String>();
@@ -193,25 +193,26 @@ public class UIhdq extends JPanel {
         comboBox.addItem("80%");
         comboBox.addItem("90%");
         comboBox.addItem("95%");
-        
+
         queryModeBox = new JComboBox<String>();
-        queryModeBox.setToolTipText("查重模式 \n1、所有文档两两比较；\n2、今年与往年比较（所选路径中必须有一个”今年“文件夹、一个“往年”文件夹）");
-        queryModeBox.addItem("选择查重模式");
+        queryModeBox.setToolTipText("相似度比对模式 \n1、所有文档两两比较；");
+//        queryModeBox.setToolTipText("相似度比对模式 \n1、所有文档两两比较；\n2、今年与往年比较（所选路径中必须有一个”今年“文件夹、一个“往年”文件夹）");
+        queryModeBox.addItem("选择相似度比对模式");
         queryModeBox.addItem("模式1两两");
-        queryModeBox.addItem("模式2今年与往年");
-        
+//        queryModeBox.addItem("模式2今年与往年");
+
         multithreadingBox = new JComboBox<String>();
         multithreadingBox.setToolTipText("开启多线程,速度更快;但更耗CPU资源");
         multithreadingBox.addItem("线程模式");
         multithreadingBox.addItem("1.单线程");
         multithreadingBox.addItem("2.多线程");
-        
-        JButton beginButton = new JButton("开始查重");
+
+        JButton beginButton = new JButton("开始比对");
         beginButton.setForeground(Color.BLACK);
         beginButton.setFont(new Font("仿宋", Font.BOLD, 20));
         beginButton.addMouseListener(new MouseAdapter() {
             int index = 1;
-            
+
             @Override
             public void mouseClicked(MouseEvent e) {
                 docLocationTextArea.setText("开始处理：\n");
@@ -222,10 +223,10 @@ public class UIhdq extends JPanel {
                     docLocationTextArea.setForeground(Color.magenta); // 紫色
                 }
                 index++;
-                
+
                 //获取相似度阈值
                 String threshold = (String) comboBox.getSelectedItem();
-                
+
                 switch (threshold) {
                     case "20%":
                         simThre = 0.2;
@@ -260,9 +261,9 @@ public class UIhdq extends JPanel {
                 long startTime = System.currentTimeMillis(); // 获取开始时间
                 //是否开启多线程
                 boolean multithreadingFlag = "2.多线程".equals(multithreadingBox.getSelectedItem());
-                
+
                 String excelPath =
-                        path + "\\查重结果".concat("智能分词-" + "图片查重-" + (String) queryModeBox.getSelectedItem()).concat(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())).concat(".xlsx");
+                        path + "\\相似度比对结果".concat("智能分词-" + "图片相似度比对-" + (String) queryModeBox.getSelectedItem()).concat(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())).concat(".xlsx");
                 try {
                     switch ((String) queryModeBox.getSelectedItem()) {
                         case "模式2今年与往年":
@@ -272,15 +273,15 @@ public class UIhdq extends JPanel {
                         default:
                             CompareOptimize.getSimilarityMode1(path, wordBox.isSelected(), picBox.isSelected(),
                                     simThre, excelPath, multithreadingFlag);
-                        
+
                     }
                     long endTime = System.currentTimeMillis(); // 获取结束时间
                     System.out.println("所有文档相似度计算完成，共耗时：" + (endTime - startTime) / 1000 + "s"); // 输出程序运行时间
                 } catch (Exception ex) {
                     System.out.println("计算出错,请检查后重试:" + ex);
                 }
-                
-                
+
+
             }
         });
         panel2.add(comboBox);
@@ -288,7 +289,7 @@ public class UIhdq extends JPanel {
         panel2.add(multithreadingBox);
         panel2.add(beginButton);
     }
-    
+
     /**
      * 控制台重定向
      *
@@ -301,13 +302,13 @@ public class UIhdq extends JPanel {
                 docLocationTextArea.append(String.valueOf((char) b));
                 docLocationTextArea.paintImmediately(docLocationTextArea.getBounds());// 实时输出
             }
-            
+
             @Override
             public void write(byte b[]) throws IOException {
                 docLocationTextArea.append(new String(b));
                 docLocationTextArea.paintImmediately(docLocationTextArea.getBounds());// 实时输出
             }
-            
+
             @Override
             public void write(byte b[], int off, int len) throws IOException {
                 docLocationTextArea.append(new String(b, off, len));
@@ -318,11 +319,11 @@ public class UIhdq extends JPanel {
         System.setOut(myOut);
         System.setErr(myOut);
     }
-    
+
     public static void main(String args[]) {
         redirectConsole();
         try {
-            JFrame frame = new JFrame("本地文档查重系统");
+            JFrame frame = new JFrame("本地文档相似度比对系统");
             frame.setBounds(300, 200, 800, 600);// 初始界面大小
             frame.getContentPane().add(new UIhdq(), BorderLayout.CENTER);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

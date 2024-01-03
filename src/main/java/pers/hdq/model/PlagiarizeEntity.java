@@ -12,7 +12,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 抄袭名单
+ * 超过相似度阈值名单
  *
  * @Author: HuDaoquan
  * @Email: 1455523026@qq.com
@@ -29,11 +29,11 @@ import lombok.ToString;
 @HeadRowHeight(30)
 public class PlagiarizeEntity {
     /**
-     * 抄袭文件名
+     * 超过相似度阈值文件名
      **/
     @ColumnWidth(15)
-    @ExcelProperty(value = "抄袭文件名", index = 0)
+    @ExcelProperty(value = "超过相似度阈值文件名", index = 0)
     private String docName;
-    
-    
+
+
 }
