@@ -81,7 +81,7 @@ public class UIhdq extends JPanel {
             panel1.add(scrollPane1);
             scrollPane1.setBounds(10, 30, 750, 230);// 结果框大小
             // ---- label1 ----
-            label1.setText("相似度比对结果：");
+            label1.setText("比对结果：");
             panel1.add(label1);
             label1.setBounds(10, 0, 87, 25);
             { // compute preferred size
@@ -136,7 +136,7 @@ public class UIhdq extends JPanel {
         textPath.setBounds(145, 13, 425, 32);
         tableShowJPanel.add(textPath);
         textPath.setColumns(10);
-        JLabel label = new JLabel("您选择的相似度比对路径是：");
+        JLabel label = new JLabel("您选择的比对路径是：");
         label.setFont(new Font("仿宋", Font.PLAIN, 14));
         label.setBounds(10, 16, 145, 29);
         tableShowJPanel.add(label);
