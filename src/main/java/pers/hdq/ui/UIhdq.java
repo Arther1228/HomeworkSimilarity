@@ -127,7 +127,7 @@ public class UIhdq extends JPanel {
                 "\n  3.相似度比对结果存储于所选文件夹中以“相似度比对结果”开头的Excel表格中；" +
                 "\n  4.“简略结果”表列出每个文件及其最相似文件，详细结果表列出全部结果；超过相似度阈值名单会列出相似度超过在选定阈值的文件名。");
         txtpnrnrncsvexcelrn.setToolTipText("使用说明");
-        txtpnrnrncsvexcelrn.setBounds(10, 55, 559, 186);
+        txtpnrnrncsvexcelrn.setBounds(10, 55, 559, 210);
         tableShowJPanel.add(txtpnrnrncsvexcelrn);
         textPath = new JTextField();
         textPath.setFont(new Font("仿宋", Font.PLAIN, 16));
