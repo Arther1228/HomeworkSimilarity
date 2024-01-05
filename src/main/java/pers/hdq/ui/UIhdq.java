@@ -1,8 +1,6 @@
 package pers.hdq.ui;
 
-
 import pers.hdq.function.CompareOptimize;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -11,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
@@ -44,17 +41,30 @@ public class UIhdq extends JPanel {
     }
 
     private void initComponents() {
-        JPanel panel1 = new JPanel();
-        panel1.setToolTipText("");
-        JScrollPane scrollPane1 = new JScrollPane();
-        docLocationTextArea = new JTextArea();
-        Font x = new Font("仿宋", 0, 15);
-        docLocationTextArea.setFont(x);
-        docLocationTextArea.setToolTipText("相似度比对结果");
-        JLabel label1 = new JLabel();
-        label1.setFont(new Font("仿宋", Font.BOLD, 14));
-        label1.setToolTipText("");
+
+        initStyle();
+
+        initPanel1();
+
+        // ======== tableShowJPanel ========
         JPanel tableShowJPanel = new JPanel();
+        initTableShowJPanel(tableShowJPanel);
+
+        //search button
+        initSearchButton(tableShowJPanel);
+
+        // ======== panel2 ========
+        JPanel panel2 = new JPanel();
+        initPanel2(panel2);
+        tableShowJPanel.add(panel2);
+    }
+
+
+    /**
+     * 初始化页面样式
+     */
+    private void initStyle() {
+
         Border border = new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(
                 new javax.swing.border.EmptyBorder(0, 0, 0, 0), "",
                 javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.BOTTOM,
@@ -69,22 +79,44 @@ public class UIhdq extends JPanel {
             }
         });
         setLayout(new GridLayout(2, 1, 0, 5));
+
+    }
+
+    /**
+     * 初始化上方的Panel
+     */
+    private void initPanel1() {
         // ======== panel1 ========
+        JPanel panel1 = new JPanel();
+        panel1.setToolTipText("");
         {
+            JScrollPane scrollPane1 = new JScrollPane();
             panel1.setLayout(null);
             // ======== scrollPane1 ========
             {
                 // ---- docLocationTextArea ----
+                docLocationTextArea = new JTextArea();
+                Font x = new Font("仿宋", 0, 15);
+                docLocationTextArea.setFont(x);
+                docLocationTextArea.setToolTipText("相似度比对结果");
                 docLocationTextArea.setEditable(false);
                 scrollPane1.setViewportView(docLocationTextArea);
             }
             panel1.add(scrollPane1);
             scrollPane1.setBounds(10, 30, 750, 230);// 结果框大小
+
             // ---- label1 ----
-            label1.setText("比对结果：");
-            panel1.add(label1);
-            label1.setBounds(10, 0, 87, 25);
-            { // compute preferred size
+            {
+                JLabel label1 = new JLabel();
+                label1.setFont(new Font("仿宋", Font.BOLD, 14));
+                label1.setToolTipText("");
+                label1.setText("比对结果：");
+                panel1.add(label1);
+                label1.setBounds(10, 0, 87, 25);
+            }
+
+            {
+                // compute preferred size
                 Dimension preferredSize = new Dimension();
                 for (int i = 0; i < panel1.getComponentCount(); i++) {
                     Rectangle bounds = panel1.getComponent(i).getBounds();
@@ -99,24 +131,29 @@ public class UIhdq extends JPanel {
             }
         }
         add(panel1);
-        // ======== tableShowJPanel ========
-        {
-            tableShowJPanel.setLayout(null);
-            { // compute preferred size
-                Dimension preferredSize = new Dimension();
-                for (int i = 0; i < tableShowJPanel.getComponentCount(); i++) {
-                    Rectangle bounds = tableShowJPanel.getComponent(i).getBounds();
-                    preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
-                    preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
-                }
-                Insets insets = tableShowJPanel.getInsets();
-                preferredSize.width += insets.right;
-                preferredSize.height += insets.bottom;
-                tableShowJPanel.setMinimumSize(preferredSize);
-                tableShowJPanel.setPreferredSize(preferredSize);
-            }
+    }
+
+    /**
+     * 初始化下方的TableShowJPanel
+     *
+     * @param tableShowJPanel
+     */
+    private void initTableShowJPanel(JPanel tableShowJPanel) {
+        tableShowJPanel.setLayout(null);
+
+        // compute preferred size
+        Dimension preferredSize = new Dimension();
+        for (int i = 0; i < tableShowJPanel.getComponentCount(); i++) {
+            Rectangle bounds = tableShowJPanel.getComponent(i).getBounds();
+            preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
+            preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
         }
-        add(tableShowJPanel);
+        Insets insets = tableShowJPanel.getInsets();
+        preferredSize.width += insets.right;
+        preferredSize.height += insets.bottom;
+        tableShowJPanel.setMinimumSize(preferredSize);
+        tableShowJPanel.setPreferredSize(preferredSize);
+
         JTextPane txtpnrnrncsvexcelrn = new JTextPane();
         txtpnrnrncsvexcelrn.setBackground(SystemColor.controlHighlight);
         txtpnrnrncsvexcelrn.setForeground(Color.BLACK);
@@ -129,20 +166,34 @@ public class UIhdq extends JPanel {
         txtpnrnrncsvexcelrn.setToolTipText("使用说明");
         txtpnrnrncsvexcelrn.setBounds(10, 55, 559, 210);
         tableShowJPanel.add(txtpnrnrncsvexcelrn);
+
         textPath = new JTextField();
         textPath.setFont(new Font("仿宋", Font.PLAIN, 16));
         textPath.setBackground(SystemColor.menu);
         textPath.setEditable(false);
         textPath.setBounds(145, 13, 425, 32);
-        tableShowJPanel.add(textPath);
         textPath.setColumns(10);
+        tableShowJPanel.add(textPath);
+
+        add(tableShowJPanel);
+
+    }
+
+    /**
+     * 初始化 选择目录和查询按钮
+     * @param tableShowJPanel
+     */
+    private void initSearchButton(JPanel tableShowJPanel){
+
         JLabel label = new JLabel("您选择的比对路径是：");
         label.setFont(new Font("仿宋", Font.PLAIN, 14));
         label.setBounds(10, 16, 145, 29);
         tableShowJPanel.add(label);
+
+        // ---- searchButton ----
         JButton searchButton = new JButton();
+        searchButton.setText("选择比对路径");
         searchButton.setBounds(598, 14, 145, 33);
-        tableShowJPanel.add(searchButton);
         searchButton.setFont(new Font("仿宋", Font.BOLD, 16));
         searchButton.addActionListener(new ActionListener() {
             @Override
@@ -159,12 +210,19 @@ public class UIhdq extends JPanel {
                 }
             }
         });
-        // ---- searchButton ----
-        searchButton.setText("选择比对路径");
-        JPanel panel2 = new JPanel();
+        tableShowJPanel.add(searchButton);
+    }
+
+
+    /**
+     * 初始化下方右侧的Panel
+     *
+     * @param panel2
+     */
+    private void initPanel2(JPanel panel2) {
+
         panel2.setBounds(608, 74, 132, 193);
-        tableShowJPanel.add(panel2);
-        // ======== panel2 ========
+
         {
             panel2.setLayout(new GridLayout(6, 1, 0, 3));
             wordBox = new JCheckBox("打开智能分词");
@@ -226,7 +284,6 @@ public class UIhdq extends JPanel {
 
                 //获取相似度阈值
                 String threshold = (String) comboBox.getSelectedItem();
-
                 switch (threshold) {
                     case "20%":
                         simThre = 0.2;
@@ -261,19 +318,14 @@ public class UIhdq extends JPanel {
                 long startTime = System.currentTimeMillis(); // 获取开始时间
                 //是否开启多线程
                 boolean multithreadingFlag = "2.多线程".equals(multithreadingBox.getSelectedItem());
-
-                String excelPath =
-                        path + "\\相似度比对结果".concat("智能分词-" + "图片相似度比对-" + (String) queryModeBox.getSelectedItem()).concat(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())).concat(".xlsx");
+                String excelPath = path + "\\相似度比对结果".concat("智能分词-" + "图片相似度比对-" + queryModeBox.getSelectedItem()).concat(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())).concat(".xlsx");
                 try {
                     switch ((String) queryModeBox.getSelectedItem()) {
                         case "模式2今年与往年":
-                            CompareOptimize.getSimilarityMode2(path, wordBox.isSelected(), picBox.isSelected(),
-                                    simThre, excelPath, multithreadingFlag);
+                            CompareOptimize.getSimilarityMode2(path, wordBox.isSelected(), picBox.isSelected(), simThre, excelPath, multithreadingFlag);
                             break;
                         default:
-                            CompareOptimize.getSimilarityMode1(path, wordBox.isSelected(), picBox.isSelected(),
-                                    simThre, excelPath, multithreadingFlag);
-
+                            CompareOptimize.getSimilarityMode1(path, wordBox.isSelected(), picBox.isSelected(), simThre, excelPath, multithreadingFlag);
                     }
                     long endTime = System.currentTimeMillis(); // 获取结束时间
                     System.out.println("所有文档相似度计算完成，共耗时：" + (endTime - startTime) / 1000 + "s"); // 输出程序运行时间
@@ -298,19 +350,19 @@ public class UIhdq extends JPanel {
     public static void redirectConsole() {
         OutputStream textAreaStream = new OutputStream() {
             @Override
-            public void write(int b) throws IOException {
+            public void write(int b) {
                 docLocationTextArea.append(String.valueOf((char) b));
                 docLocationTextArea.paintImmediately(docLocationTextArea.getBounds());// 实时输出
             }
 
             @Override
-            public void write(byte b[]) throws IOException {
+            public void write(byte b[]) {
                 docLocationTextArea.append(new String(b));
                 docLocationTextArea.paintImmediately(docLocationTextArea.getBounds());// 实时输出
             }
 
             @Override
-            public void write(byte b[], int off, int len) throws IOException {
+            public void write(byte b[], int off, int len) {
                 docLocationTextArea.append(new String(b, off, len));
                 docLocationTextArea.paintImmediately(docLocationTextArea.getBounds());// 实时输出
             }
