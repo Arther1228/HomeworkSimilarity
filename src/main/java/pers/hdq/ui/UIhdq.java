@@ -106,7 +106,7 @@ public class UIhdq extends JPanel {
         docLocationTextArea.setToolTipText("相似度比对结果");
         docLocationTextArea.setEditable(false);
         scrollPane1.setViewportView(docLocationTextArea);
-        scrollPane1.setBounds(10, 30, 750, 230);
+        scrollPane1.setBounds(10, 30, 900, 250);
         panel1.add(scrollPane1);
 
         // ---- label1 ----
@@ -150,7 +150,7 @@ public class UIhdq extends JPanel {
         // -- label --
         JLabel label = new JLabel("您选择的比对路径是：");
         label.setFont(new Font("仿宋", Font.PLAIN, 14));
-        label.setBounds(10, 16, 145, 29);
+        label.setBounds(10, 8, 145, 29);
         tableShowJPanel.add(label);
 
         //--textPath--
@@ -158,7 +158,7 @@ public class UIhdq extends JPanel {
         textPath.setFont(new Font("仿宋", Font.PLAIN, 16));
         textPath.setBackground(SystemColor.menu);
         textPath.setEditable(false);
-        textPath.setBounds(145, 13, 425, 32);
+        textPath.setBounds(145, 8, 625, 32);
         textPath.setColumns(10);
 
         tableShowJPanel.add(textPath);
@@ -166,7 +166,7 @@ public class UIhdq extends JPanel {
         // ---- searchButton ----
         JButton searchButton = new JButton();
         searchButton.setText("选择比对路径");
-        searchButton.setBounds(598, 14, 145, 33);
+        searchButton.setBounds(798, 14, 145, 33);
         searchButton.setFont(new Font("仿宋", Font.BOLD, 16));
         searchButton.addActionListener(new ActionListener() {
             @Override
@@ -193,7 +193,7 @@ public class UIhdq extends JPanel {
      * @param panel2
      */
     private void initPanel2(JPanel panel2) {
-        panel2.setBounds(608, 74, 132, 193);
+        panel2.setBounds(808, 74, 132, 193);
 
         {
             panel2.setLayout(new GridLayout(6, 1, 0, 3));
@@ -349,7 +349,7 @@ public class UIhdq extends JPanel {
         try {
             JFrame frame = new JFrame("本地文档相似度比对系统");
             // 初始界面大小
-            frame.setBounds(300, 200, 800, 600);
+            frame.setBounds(500, 100, 1000, 800);
             frame.getContentPane().add(new UIhdq(), BorderLayout.CENTER);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setVisible(true);
