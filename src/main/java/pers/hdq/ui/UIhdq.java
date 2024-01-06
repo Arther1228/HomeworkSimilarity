@@ -89,10 +89,11 @@ public class UIhdq extends JPanel {
         // ======== panel1 ========
         JPanel panel1 = new JPanel();
         panel1.setToolTipText("");
+        panel1.setLayout(null);
+
         {
-            JScrollPane scrollPane1 = new JScrollPane();
-            panel1.setLayout(null);
             // ======== scrollPane1 ========
+            JScrollPane scrollPane1 = new JScrollPane();
             {
                 // ---- docLocationTextArea ----
                 docLocationTextArea = new JTextArea();
@@ -154,6 +155,21 @@ public class UIhdq extends JPanel {
         tableShowJPanel.setMinimumSize(preferredSize);
         tableShowJPanel.setPreferredSize(preferredSize);
 
+        textPath = new JTextField();
+        textPath.setFont(new Font("仿宋", Font.PLAIN, 16));
+        textPath.setBackground(SystemColor.menu);
+        textPath.setEditable(false);
+        textPath.setBounds(145, 13, 425, 32);
+        textPath.setColumns(10);
+        tableShowJPanel.add(textPath);
+
+        initJTextPane(tableShowJPanel);
+
+        add(tableShowJPanel);
+
+    }
+
+    private void initJTextPane(JPanel tableShowJPanel){
         JTextPane txtpnrnrncsvexcelrn = new JTextPane();
         txtpnrnrncsvexcelrn.setBackground(SystemColor.controlHighlight);
         txtpnrnrncsvexcelrn.setForeground(Color.BLACK);
@@ -166,17 +182,6 @@ public class UIhdq extends JPanel {
         txtpnrnrncsvexcelrn.setToolTipText("使用说明");
         txtpnrnrncsvexcelrn.setBounds(10, 55, 559, 210);
         tableShowJPanel.add(txtpnrnrncsvexcelrn);
-
-        textPath = new JTextField();
-        textPath.setFont(new Font("仿宋", Font.PLAIN, 16));
-        textPath.setBackground(SystemColor.menu);
-        textPath.setEditable(false);
-        textPath.setBounds(145, 13, 425, 32);
-        textPath.setColumns(10);
-        tableShowJPanel.add(textPath);
-
-        add(tableShowJPanel);
-
     }
 
     /**
