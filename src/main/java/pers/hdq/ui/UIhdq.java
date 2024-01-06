@@ -1,6 +1,7 @@
 package pers.hdq.ui;
 
 import pers.hdq.function.CompareOptimize;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -51,7 +52,12 @@ public class UIhdq extends JPanel {
         initTableShowJPanel(tableShowJPanel);
 
         //search button
-        initSearchButton(tableShowJPanel);
+        initTextPathAndSearchButton(tableShowJPanel);
+
+        // textPane
+        JTextPane jTextPane = UiUtil.createJTextPane();
+        tableShowJPanel.add(jTextPane);
+        UiUtil.showTextPane(jTextPane, true);
 
         // ======== panel2 ========
         JPanel panel2 = new JPanel();
@@ -91,46 +97,31 @@ public class UIhdq extends JPanel {
         panel1.setToolTipText("");
         panel1.setLayout(null);
 
-        {
-            // ======== scrollPane1 ========
-            JScrollPane scrollPane1 = new JScrollPane();
-            {
-                // ---- docLocationTextArea ----
-                docLocationTextArea = new JTextArea();
-                Font x = new Font("仿宋", 0, 15);
-                docLocationTextArea.setFont(x);
-                docLocationTextArea.setToolTipText("相似度比对结果");
-                docLocationTextArea.setEditable(false);
-                scrollPane1.setViewportView(docLocationTextArea);
-            }
-            panel1.add(scrollPane1);
-            scrollPane1.setBounds(10, 30, 750, 230);// 结果框大小
+        // ======== scrollPane1 结果框 ========
+        JScrollPane scrollPane1 = new JScrollPane();
+        // ---- docLocationTextArea ----
+        docLocationTextArea = new JTextArea();
+        Font x = new Font("仿宋", 0, 15);
+        docLocationTextArea.setFont(x);
+        docLocationTextArea.setToolTipText("相似度比对结果");
+        docLocationTextArea.setEditable(false);
+        scrollPane1.setViewportView(docLocationTextArea);
+        scrollPane1.setBounds(10, 30, 750, 230);
+        panel1.add(scrollPane1);
 
-            // ---- label1 ----
-            {
-                JLabel label1 = new JLabel();
-                label1.setFont(new Font("仿宋", Font.BOLD, 14));
-                label1.setToolTipText("");
-                label1.setText("比对结果：");
-                panel1.add(label1);
-                label1.setBounds(10, 0, 87, 25);
-            }
+        // ---- label1 ----
+        JLabel label1 = new JLabel();
+        label1.setFont(new Font("仿宋", Font.BOLD, 14));
+        label1.setToolTipText("");
+        label1.setText("比对结果：");
+        label1.setBounds(10, 0, 87, 25);
 
-            {
-                // compute preferred size
-                Dimension preferredSize = new Dimension();
-                for (int i = 0; i < panel1.getComponentCount(); i++) {
-                    Rectangle bounds = panel1.getComponent(i).getBounds();
-                    preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
-                    preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
-                }
-                Insets insets = panel1.getInsets();
-                preferredSize.width += insets.right;
-                preferredSize.height += insets.bottom;
-                panel1.setMinimumSize(preferredSize);
-                panel1.setPreferredSize(preferredSize);
-            }
-        }
+        panel1.add(label1);
+
+        Dimension preferredSize = UiUtil.computePreferredSize(panel1);
+        panel1.setMinimumSize(preferredSize);
+        panel1.setPreferredSize(preferredSize);
+
         add(panel1);
     }
 
@@ -142,58 +133,35 @@ public class UIhdq extends JPanel {
     private void initTableShowJPanel(JPanel tableShowJPanel) {
         tableShowJPanel.setLayout(null);
 
-        // compute preferred size
-        Dimension preferredSize = new Dimension();
-        for (int i = 0; i < tableShowJPanel.getComponentCount(); i++) {
-            Rectangle bounds = tableShowJPanel.getComponent(i).getBounds();
-            preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
-            preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
-        }
-        Insets insets = tableShowJPanel.getInsets();
-        preferredSize.width += insets.right;
-        preferredSize.height += insets.bottom;
+        Dimension preferredSize = UiUtil.computePreferredSize(tableShowJPanel);
         tableShowJPanel.setMinimumSize(preferredSize);
         tableShowJPanel.setPreferredSize(preferredSize);
 
+        add(tableShowJPanel);
+    }
+
+    /**
+     * 初始化 选择目录和查询按钮
+     *
+     * @param tableShowJPanel
+     */
+    private void initTextPathAndSearchButton(JPanel tableShowJPanel) {
+
+        // -- label --
+        JLabel label = new JLabel("您选择的比对路径是：");
+        label.setFont(new Font("仿宋", Font.PLAIN, 14));
+        label.setBounds(10, 16, 145, 29);
+        tableShowJPanel.add(label);
+
+        //--textPath--
         textPath = new JTextField();
         textPath.setFont(new Font("仿宋", Font.PLAIN, 16));
         textPath.setBackground(SystemColor.menu);
         textPath.setEditable(false);
         textPath.setBounds(145, 13, 425, 32);
         textPath.setColumns(10);
+
         tableShowJPanel.add(textPath);
-
-        initJTextPane(tableShowJPanel);
-
-        add(tableShowJPanel);
-
-    }
-
-    private void initJTextPane(JPanel tableShowJPanel){
-        JTextPane txtpnrnrncsvexcelrn = new JTextPane();
-        txtpnrnrncsvexcelrn.setBackground(SystemColor.controlHighlight);
-        txtpnrnrncsvexcelrn.setForeground(Color.BLACK);
-        txtpnrnrncsvexcelrn.setFont(new Font("仿宋", Font.BOLD, 16));
-        txtpnrnrncsvexcelrn.setEditable(false);
-        txtpnrnrncsvexcelrn.setText("使用说明：\r\n  1.相似度比对前请将待相似度比对文档放入文件夹中，然后点击“选择比对路径”按钮选择该文件夹，点击“开始相似度比对”按钮，开始比对；" +
-                "\n  2.相似度比对模式1:将对所选路径下所有文档两两比较;  " +
-                "\n  3.相似度比对结果存储于所选文件夹中以“相似度比对结果”开头的Excel表格中；" +
-                "\n  4.“简略结果”表列出每个文件及其最相似文件，详细结果表列出全部结果；超过相似度阈值名单会列出相似度超过在选定阈值的文件名。");
-        txtpnrnrncsvexcelrn.setToolTipText("使用说明");
-        txtpnrnrncsvexcelrn.setBounds(10, 55, 559, 210);
-        tableShowJPanel.add(txtpnrnrncsvexcelrn);
-    }
-
-    /**
-     * 初始化 选择目录和查询按钮
-     * @param tableShowJPanel
-     */
-    private void initSearchButton(JPanel tableShowJPanel){
-
-        JLabel label = new JLabel("您选择的比对路径是：");
-        label.setFont(new Font("仿宋", Font.PLAIN, 14));
-        label.setBounds(10, 16, 145, 29);
-        tableShowJPanel.add(label);
 
         // ---- searchButton ----
         JButton searchButton = new JButton();
@@ -225,7 +193,6 @@ public class UIhdq extends JPanel {
      * @param panel2
      */
     private void initPanel2(JPanel panel2) {
-
         panel2.setBounds(608, 74, 132, 193);
 
         {
@@ -381,7 +348,8 @@ public class UIhdq extends JPanel {
         redirectConsole();
         try {
             JFrame frame = new JFrame("本地文档相似度比对系统");
-            frame.setBounds(300, 200, 800, 600);// 初始界面大小
+            // 初始界面大小
+            frame.setBounds(300, 200, 800, 600);
             frame.getContentPane().add(new UIhdq(), BorderLayout.CENTER);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setVisible(true);
