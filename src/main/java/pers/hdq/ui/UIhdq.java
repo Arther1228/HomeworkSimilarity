@@ -43,7 +43,7 @@ public class UIhdq extends JPanel {
 
     private void initComponents() {
 
-        initFormStyle();
+        initFrameStyle();
 
         // ======== panel1 ========
         JPanel panel1 = new JPanel();
@@ -58,12 +58,6 @@ public class UIhdq extends JPanel {
 
         // textPane
         JTabbedPane tabbedPane = UiUtil.initJTabbedPane();
-        JTextPane jDescriptionPane = UiUtil.initJTextPane();
-        tabbedPane.addTab("比较说明", null, jDescriptionPane, "说明内容");
-
-        JComponent jComponent1 = UiUtil.makeTextPanel("Excel格式文本比较");
-        tabbedPane.addTab("Excel文件比较", null, jComponent1, "设置说明内容");
-
         tableShowJPanel.add(tabbedPane);
 
         // ======== panel2 ========
@@ -74,7 +68,6 @@ public class UIhdq extends JPanel {
         //===== show border
 //        panel1.setBorder(BorderFactory.createLineBorder(Color.red, 2));
 //        tableShowJPanel.setBorder(BorderFactory.createLineBorder(Color.black, 2));
-//        jDescriptionPane.setBorder(BorderFactory.createLineBorder(Color.blue, 2));
 //        panel2.setBorder(BorderFactory.createLineBorder(Color.green, 2));
 
     }
@@ -83,7 +76,7 @@ public class UIhdq extends JPanel {
     /**
      * 初始化页面样式
      */
-    private void initFormStyle() {
+    private void initFrameStyle() {
 
         Border border = new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(
                 new javax.swing.border.EmptyBorder(0, 0, 0, 0), "",
@@ -119,7 +112,7 @@ public class UIhdq extends JPanel {
         docLocationTextArea.setToolTipText("相似度比对结果");
         docLocationTextArea.setEditable(false);
         scrollPane1.setViewportView(docLocationTextArea);
-        scrollPane1.setBounds(10, 30, 900, 320);
+        scrollPane1.setBounds(10, 30, 950, 320);
 
 //        scrollPane1.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
 
