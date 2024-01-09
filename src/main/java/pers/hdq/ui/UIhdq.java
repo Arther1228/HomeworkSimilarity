@@ -43,9 +43,11 @@ public class UIhdq extends JPanel {
 
     private void initComponents() {
 
-        initStyle();
+        initFormStyle();
 
-        initPanel1();
+        // ======== panel1 ========
+        JPanel panel1 = new JPanel();
+        initResultPanel(panel1);
 
         // ======== tableShowJPanel ========
         JPanel tableShowJPanel = new JPanel();
@@ -55,21 +57,33 @@ public class UIhdq extends JPanel {
         initTextPathAndSearchButton(tableShowJPanel);
 
         // textPane
-        JTextPane jTextPane = UiUtil.createJTextPane();
-        tableShowJPanel.add(jTextPane);
-        UiUtil.showTextPane(jTextPane, true);
+        JTabbedPane tabbedPane = UiUtil.initJTabbedPane();
+        JTextPane jDescriptionPane = UiUtil.initJTextPane();
+        tabbedPane.addTab("比较说明", null, jDescriptionPane, "说明内容");
+
+        JComponent jComponent1 = UiUtil.makeTextPanel("Excel格式文本比较");
+        tabbedPane.addTab("Excel文件比较", null, jComponent1, "设置说明内容");
+
+        tableShowJPanel.add(tabbedPane);
 
         // ======== panel2 ========
         JPanel panel2 = new JPanel();
         initPanel2(panel2);
         tableShowJPanel.add(panel2);
+
+        //===== show border
+//        panel1.setBorder(BorderFactory.createLineBorder(Color.red, 2));
+//        tableShowJPanel.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+//        jDescriptionPane.setBorder(BorderFactory.createLineBorder(Color.blue, 2));
+//        panel2.setBorder(BorderFactory.createLineBorder(Color.green, 2));
+
     }
 
 
     /**
      * 初始化页面样式
      */
-    private void initStyle() {
+    private void initFormStyle() {
 
         Border border = new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(
                 new javax.swing.border.EmptyBorder(0, 0, 0, 0), "",
@@ -84,16 +98,15 @@ public class UIhdq extends JPanel {
                 }
             }
         });
-        setLayout(new GridLayout(2, 1, 0, 5));
 
+        setLayout(new GridLayout(2, 1, 0, 5));
     }
 
     /**
      * 初始化上方的Panel
      */
-    private void initPanel1() {
-        // ======== panel1 ========
-        JPanel panel1 = new JPanel();
+    private void initResultPanel(JPanel panel1) {
+
         panel1.setToolTipText("");
         panel1.setLayout(null);
 
@@ -106,7 +119,10 @@ public class UIhdq extends JPanel {
         docLocationTextArea.setToolTipText("相似度比对结果");
         docLocationTextArea.setEditable(false);
         scrollPane1.setViewportView(docLocationTextArea);
-        scrollPane1.setBounds(10, 30, 900, 250);
+        scrollPane1.setBounds(10, 30, 900, 320);
+
+//        scrollPane1.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
+
         panel1.add(scrollPane1);
 
         // ---- label1 ----
@@ -118,9 +134,11 @@ public class UIhdq extends JPanel {
 
         panel1.add(label1);
 
-        Dimension preferredSize = UiUtil.computePreferredSize(panel1);
-        panel1.setMinimumSize(preferredSize);
-        panel1.setPreferredSize(preferredSize);
+//        Dimension preferredSize = UiUtil.computePreferredSize(panel1);
+//        panel1.setMinimumSize(preferredSize);
+//        panel1.setPreferredSize(preferredSize);
+
+        panel1.setBounds(10, 30, 900, 250);
 
         add(panel1);
     }
@@ -131,11 +149,14 @@ public class UIhdq extends JPanel {
      * @param tableShowJPanel
      */
     private void initTableShowJPanel(JPanel tableShowJPanel) {
+        tableShowJPanel.setToolTipText("");
         tableShowJPanel.setLayout(null);
 
-        Dimension preferredSize = UiUtil.computePreferredSize(tableShowJPanel);
-        tableShowJPanel.setMinimumSize(preferredSize);
-        tableShowJPanel.setPreferredSize(preferredSize);
+//        Dimension preferredSize = UiUtil.computePreferredSize(tableShowJPanel);
+//        tableShowJPanel.setMinimumSize(preferredSize);
+//        tableShowJPanel.setPreferredSize(preferredSize);
+
+        tableShowJPanel.setBounds(10, 30, 900, 600);
 
         add(tableShowJPanel);
     }
@@ -193,7 +214,8 @@ public class UIhdq extends JPanel {
      * @param panel2
      */
     private void initPanel2(JPanel panel2) {
-        panel2.setBounds(808, 74, 132, 193);
+
+        panel2.setBounds(808, 54, 132, 300);
 
         {
             panel2.setLayout(new GridLayout(6, 1, 0, 3));

@@ -8,10 +8,29 @@ import java.awt.*;
  */
 public class UiUtil {
 
+
+    /**
+     *  初始化标签页
+     */
+    public static JTabbedPane initJTabbedPane(){
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.setBounds(10, 55, 759, 300);
+        return tabbedPane;
+    }
+
+    protected static JComponent makeTextPanel(String text) {
+        JPanel panel = new JPanel(false);
+        JLabel filler = new JLabel(text);
+        filler.setHorizontalAlignment(JLabel.CENTER);
+        panel.setLayout(new GridLayout(1, 1));
+        panel.add(filler);
+        return panel;
+    }
+
     /**
      *  初始化使用说明
      */
-    public static JTextPane createJTextPane(){
+    public static JTextPane initJTextPane(){
 
         JTextPane txtpnrnrncsvexcelrn = new JTextPane();
         txtpnrnrncsvexcelrn.setBackground(SystemColor.controlHighlight);
@@ -19,19 +38,13 @@ public class UiUtil {
         txtpnrnrncsvexcelrn.setFont(new Font("仿宋", Font.BOLD, 16));
         txtpnrnrncsvexcelrn.setEditable(false);
         txtpnrnrncsvexcelrn.setText("使用说明：\r\n  1.相似度比对前请将待相似度比对文档放入文件夹中，然后点击“选择比对路径”按钮选择该文件夹，点击“开始相似度比对”按钮，开始比对；" +
-                "\n  2.相似度比对模式1:将对所选路径下所有文档两两比较;  " +
-                "\n  3.相似度比对结果存储于所选文件夹中以“相似度比对结果”开头的Excel表格中；" +
-                "\n  4.“简略结果”表列出每个文件及其最相似文件，详细结果表列出全部结果；超过相似度阈值名单会列出相似度超过在选定阈值的文件名。");
+                "\n  2.相似度比对结果存储于所选文件夹中以“相似度比对结果”开头的Excel表格中；" +
+                "\n  3.“简略结果”表列出每个文件及其最相似文件，详细结果表列出全部结果；超过相似度阈值名单会列出相似度超过在选定阈值的文件名。"+
+                "\n  4.Word/txt目前只支持整个文件两两比较，不支持选择文本段落。");
         txtpnrnrncsvexcelrn.setToolTipText("使用说明");
         txtpnrnrncsvexcelrn.setBounds(10, 55, 759, 300);
 
         return txtpnrnrncsvexcelrn;
-    }
-
-
-    public static void showTextPane(JTextPane txtpnrnrncsvexcelrn, boolean flag){
-
-        txtpnrnrncsvexcelrn.setVisible(flag);
     }
 
     public static Dimension computePreferredSize(JPanel panel){
