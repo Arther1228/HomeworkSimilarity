@@ -1,9 +1,11 @@
 package pers.hdq.util;
 
-import pers.hdq.ui.SearchMouseAdapter;
+import pers.hdq.ui.UIhdq;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 /**
  * @author yangliangchuang 2024-01-10 10:18
@@ -59,7 +61,7 @@ public class Contants {
         return picBox;
     }
 
-    public static JPanel getRadioButtonPanel() {
+    public static JPanel getRadioButtonPanel(UIhdq uIhdq) {
         JPanel radioButtonPanel = new JPanel();
 
         radioButtonPanel.setLayout(new GridLayout(1, 2));
@@ -75,6 +77,26 @@ public class Contants {
 
         radioButtonPanel.add(rb1);
         radioButtonPanel.add(rb2);
+
+        // Add an ItemListener to rb1
+        rb1.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    uIhdq.getAddButton().setEnabled(true);
+                }
+            }
+        });
+
+        // Add an ItemListener to rb2
+        rb2.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    uIhdq.getAddButton().setEnabled(false);
+                }
+            }
+        });
 
         return radioButtonPanel;
     }

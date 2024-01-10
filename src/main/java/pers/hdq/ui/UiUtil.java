@@ -131,7 +131,7 @@ public class UiUtil {
         JCheckBox picBox = Contants.getPicBox();
 //        panel2.add(picBox);
 
-        JPanel radioButtonPanel = Contants.getRadioButtonPanel();
+        JPanel radioButtonPanel = Contants.getRadioButtonPanel(uIhdq);
         panel2.add(radioButtonPanel);
 
         JComboBox comboBox = Contants.getComboBox();

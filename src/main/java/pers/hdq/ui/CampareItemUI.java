@@ -9,9 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author yangliangchuang 2024-01-09 16:20
@@ -99,6 +98,7 @@ public class CampareItemUI {
 
         JButton addButton = new JButton("增加");
         titlePanel.add(addButton);
+        uIhdq.setAddButton(addButton);
 
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -139,17 +139,17 @@ public class CampareItemUI {
 
         private JComboBox<String> sheetComboBox;
         private JComboBox<String> columnComboBox;
+        private Map<String, List<String>> allExcelSheetListWithFileNames;
 
         private UIhdq uIhdq;
 
-        public DynamicPanel( UIhdq uIhdq) {
+        public DynamicPanel(UIhdq uIhdq) {
             this.uIhdq = uIhdq;
 
             setLayout(new GridLayout(1, 6));
             setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
 
             add(new JLabel("选择工作簿名称:"));
-
             sheetComboBox = new JComboBox<>(getSheetNames());
             sheetComboBox.addItemListener(new ItemListener() {
                 @Override
@@ -162,6 +162,15 @@ public class CampareItemUI {
             add(new JLabel("指定工作簿中的列:"));
             columnComboBox = new JComboBox<>();
             add(columnComboBox);
+
+            // Check if there are items in the combo box
+            if (sheetComboBox.getItemCount() > 0) {
+                // Select the first item (sheet name)
+                sheetComboBox.setSelectedIndex(0);
+
+                // Update the column combo box based on the selected sheet
+                updateColumnComboBox(sheetComboBox.getSelectedItem().toString());
+            }
 
             JCheckBox filterCheckBox = new JCheckBox("设置行号");
             JTextField filterTextField = new JTextField();
@@ -194,7 +203,8 @@ public class CampareItemUI {
          */
         private String[] getSheetNames() {
 
-            Set<String> excelSheetList = EasyExcelReadUtil.getAllExcelSheetList(uIhdq.getPath());
+            allExcelSheetListWithFileNames = EasyExcelReadUtil.getAllExcelSheetListWithFileNames(uIhdq.getPath());
+            Set<String> excelSheetList = allExcelSheetListWithFileNames.keySet();
             String[] sheetArray = excelSheetList.toArray(new String[0]);
 
             return sheetArray;
@@ -207,8 +217,13 @@ public class CampareItemUI {
          * @param selectedSheet
          */
         private void updateColumnComboBox(String selectedSheet) {
-            Set<String> columnNameListBySheet = EasyExcelReadUtil.getColumnNameListBySheet(uIhdq.getPath(), selectedSheet);
+            Set<String> columnNameListBySheet = new HashSet<>();
+            List<String> fileNameList = allExcelSheetListWithFileNames.get(selectedSheet);
 
+            for (String fileName : fileNameList) {
+                Set<String> columnNameListBySheet1 = EasyExcelReadUtil.getColumnNameListBySheet(fileName, selectedSheet);
+                columnNameListBySheet.addAll(columnNameListBySheet1);
+            }
             columnComboBox.removeAllItems();
             for (String column : columnNameListBySheet) {
                 columnComboBox.addItem(column);

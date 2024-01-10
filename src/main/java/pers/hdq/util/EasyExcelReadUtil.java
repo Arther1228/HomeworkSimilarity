@@ -23,33 +23,13 @@ public class EasyExcelReadUtil {
 
 
     /**
-     * 查询指定路径下所有Excel文件的sheet列表
+     * 文件夹中的所有sheet的名称：文件名称
      *
-     * @param folderPath 文件夹路径
-     * @return 所有Excel文件的sheet列表
+     * @param folderPath
+     * @return
      */
-    public static Set<String> getAllExcelSheetList(String folderPath) {
-        Set<String> sheetNameSet = new HashSet<>();
-
-        try {
-            Files.walk(Paths.get(folderPath))
-                    .filter(path -> path.toString().toLowerCase().endsWith(".xls") || path.toString().toLowerCase().endsWith(".xlsx"))
-                    .forEach(filePath -> {
-                        try {
-                            sheetNameSet.addAll(getExcelSheetList(filePath.toString()));
-                        } catch (Exception e) {
-                            log.error("Error reading Excel file: {}", filePath, e);
-                        }
-                    });
-        } catch (IOException e) {
-            log.error("Error traversing folder: {}", folderPath, e);
-        }
-
-        return sheetNameSet;
-    }
-
-    public static Map<String, String> getAllExcelSheetListWithFileNames(String folderPath) {
-        Map<String, String> sheetNameFileMap = new HashMap<>();
+    public static Map<String, List<String>> getAllExcelSheetListWithFileNames(String folderPath) {
+        Map<String, List<String>> sheetNameFileMap = new HashMap<>();
 
         try {
             Files.walk(Paths.get(folderPath))
@@ -58,8 +38,8 @@ public class EasyExcelReadUtil {
                         try {
                             Set<String> sheetNames = getExcelSheetList(filePath.toString());
                             for (String sheetName : sheetNames) {
-                                // Use sheet name as key and file name as value in the map
-                                sheetNameFileMap.put(sheetName, filePath.toString());
+                                // Update the map to include the file name for the sheet
+                                sheetNameFileMap.computeIfAbsent(sheetName, k -> new ArrayList<>()).add(filePath.toString());
                             }
                         } catch (Exception e) {
                             log.error("Error reading Excel file: {}", filePath, e);

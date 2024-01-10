@@ -3,6 +3,8 @@ package com.suncreate;
 import org.junit.Test;
 import pers.hdq.util.EasyExcelReadUtil;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -19,8 +21,8 @@ public class EasyExcelReadUtilTest {
     @Test
     public void getAllExcelSheetList(){
 
-        Set<String> allExcelSheetList = EasyExcelReadUtil.getAllExcelSheetList(path);
-        System.out.println(allExcelSheetList);
+        Map<String, List<String>> allExcelSheetListWithFileNames = EasyExcelReadUtil.getAllExcelSheetListWithFileNames(path);
+        System.out.println(allExcelSheetListWithFileNames);
     }
 
 
