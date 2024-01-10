@@ -11,13 +11,23 @@ import java.util.Set;
  */
 public class EasyExcelReadUtilTest {
 
-    private String path = "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\GBT37735——2019.xlsx";
+    private String path = "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123";
+
+    private String filePath = "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\GBT37735——2019.xlsx";
+
+
+    @Test
+    public void getAllExcelSheetList(){
+
+        Set<String> allExcelSheetList = EasyExcelReadUtil.getAllExcelSheetList(path);
+        System.out.println(allExcelSheetList);
+    }
 
 
     @Test
     public void getExcelSheetList() {
 
-        Set<String> excelSheetList = EasyExcelReadUtil.getExcelSheetList(path);
+        Set<String> excelSheetList = EasyExcelReadUtil.getExcelSheetList(filePath);
         System.out.println(excelSheetList);
 
     }
@@ -25,7 +35,7 @@ public class EasyExcelReadUtilTest {
     @Test
     public void getColumnNameListBySheet() {
         String sheetName = "题录加工";
-        Set<String> sheetColumnNameList = EasyExcelReadUtil.getColumnNameListBySheet(path, sheetName);
+        Set<String> sheetColumnNameList = EasyExcelReadUtil.getColumnNameListBySheet(filePath, sheetName);
         System.out.println(sheetColumnNameList);
 
     }
@@ -38,7 +48,7 @@ public class EasyExcelReadUtilTest {
         String columnName = "段落内容";
         Integer rowIndex = -1;
 
-        StringBuffer contentByDetailIndex = EasyExcelReadUtil.getContentByDetailIndex(path, sheetName, rowIndex, columnName);
+        StringBuffer contentByDetailIndex = EasyExcelReadUtil.getContentByDetailIndex(filePath, sheetName, rowIndex, columnName);
         System.out.println(contentByDetailIndex);
 
     }
@@ -50,7 +60,7 @@ public class EasyExcelReadUtilTest {
         String columnName = "字段值";
         Integer rowIndex = 19;
 
-        StringBuffer contentByDetailIndex = EasyExcelReadUtil.getContentByDetailIndex(path, sheetName, rowIndex, columnName);
+        StringBuffer contentByDetailIndex = EasyExcelReadUtil.getContentByDetailIndex(filePath, sheetName, rowIndex, columnName);
         System.out.println(contentByDetailIndex);
     }
 }

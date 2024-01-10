@@ -9,9 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -19,6 +20,57 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class EasyExcelReadUtil {
+
+
+    /**
+     * 查询指定路径下所有Excel文件的sheet列表
+     *
+     * @param folderPath 文件夹路径
+     * @return 所有Excel文件的sheet列表
+     */
+    public static Set<String> getAllExcelSheetList(String folderPath) {
+        Set<String> sheetNameSet = new HashSet<>();
+
+        try {
+            Files.walk(Paths.get(folderPath))
+                    .filter(path -> path.toString().toLowerCase().endsWith(".xls") || path.toString().toLowerCase().endsWith(".xlsx"))
+                    .forEach(filePath -> {
+                        try {
+                            sheetNameSet.addAll(getExcelSheetList(filePath.toString()));
+                        } catch (Exception e) {
+                            log.error("Error reading Excel file: {}", filePath, e);
+                        }
+                    });
+        } catch (IOException e) {
+            log.error("Error traversing folder: {}", folderPath, e);
+        }
+
+        return sheetNameSet;
+    }
+
+    public static Map<String, String> getAllExcelSheetListWithFileNames(String folderPath) {
+        Map<String, String> sheetNameFileMap = new HashMap<>();
+
+        try {
+            Files.walk(Paths.get(folderPath))
+                    .filter(path -> path.toString().toLowerCase().endsWith(".xls") || path.toString().toLowerCase().endsWith(".xlsx"))
+                    .forEach(filePath -> {
+                        try {
+                            Set<String> sheetNames = getExcelSheetList(filePath.toString());
+                            for (String sheetName : sheetNames) {
+                                // Use sheet name as key and file name as value in the map
+                                sheetNameFileMap.put(sheetName, filePath.toString());
+                            }
+                        } catch (Exception e) {
+                            log.error("Error reading Excel file: {}", filePath, e);
+                        }
+                    });
+        } catch (IOException e) {
+            log.error("Error traversing folder: {}", folderPath, e);
+        }
+
+        return sheetNameFileMap;
+    }
 
 
     /**

@@ -194,7 +194,7 @@ public class CampareItemUI {
          */
         private String[] getSheetNames() {
 
-            Set<String> excelSheetList = EasyExcelReadUtil.getExcelSheetList(uIhdq.getPath());
+            Set<String> excelSheetList = EasyExcelReadUtil.getAllExcelSheetList(uIhdq.getPath());
             String[] sheetArray = excelSheetList.toArray(new String[0]);
 
             return sheetArray;
