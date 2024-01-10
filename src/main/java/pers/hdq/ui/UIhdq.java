@@ -27,8 +27,6 @@ public class UIhdq extends JPanel {
      */
     private JTextArea docLocationTextArea;
 
-
-
     private JButton addButton;
 
     public String getPath() {

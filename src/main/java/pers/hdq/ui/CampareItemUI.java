@@ -1,15 +1,12 @@
 package pers.hdq.ui;
 
-import pers.hdq.util.EasyExcelReadUtil;
 import pers.hdq.util.Contants;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +18,9 @@ public class CampareItemUI {
 
     private static JPanel dynamicPanelContainer;
 
-
+    public static List<DynamicPanel> getDynamicPanels() {
+        return dynamicPanels;
+    }
     /**
      * 初始化标签页
      */
@@ -29,34 +28,14 @@ public class CampareItemUI {
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setBounds(Contants.getTabbedPaneSize());
 
-        JPanel excelComparisonPanel = CampareItemUI.createExcelComparisonPanel(uIhdq);
+        JPanel excelComparisonPanel = createExcelComparisonPanel(uIhdq);
         tabbedPane.addTab("Excel文件比较项设置", null, excelComparisonPanel, "设置比较项");
-//        JComponent wordTxt = makeTextPanel("直接选择比较的文件夹，点击开始比较，即可按照默认的两两文件进行比较相似度");
-//        tabbedPane.addTab("Word/Txt文件比较", null, wordTxt, "");
         JTextPane jDescriptionPane = initJTextPane();
         tabbedPane.addTab("比较说明", null, jDescriptionPane, "说明内容");
 
         //jDescriptionPane.setBorder(BorderFactory.createLineBorder(Color.blue, 2));
 
         return tabbedPane;
-    }
-
-    /**
-     * 生成一个textPanel
-     *
-     * @param text
-     * @return
-     */
-    public static JComponent makeTextPanel(String text) {
-
-        JPanel panel = new JPanel(false);
-        JLabel filler = new JLabel(text);
-        filler.setHorizontalAlignment(JLabel.CENTER);
-        filler.setFont(new Font("仿宋", Font.PLAIN, 16));
-        panel.setLayout(new GridLayout(1, 1));
-        panel.add(filler);
-
-        return panel;
     }
 
     /**
@@ -132,112 +111,13 @@ public class CampareItemUI {
         dynamicPanelContainer.repaint();
     }
 
-    /**
-     * 比较项
-     */
-    private static class DynamicPanel extends JPanel {
-
-        private JComboBox<String> sheetComboBox;
-        private JComboBox<String> columnComboBox;
-        private Map<String, List<String>> allExcelSheetListWithFileNames;
-
-        private UIhdq uIhdq;
-
-        public DynamicPanel(UIhdq uIhdq) {
-            this.uIhdq = uIhdq;
-
-            setLayout(new GridLayout(1, 6));
-            setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
-
-            add(new JLabel("选择工作簿名称:"));
-            sheetComboBox = new JComboBox<>(getSheetNames());
-            sheetComboBox.addItemListener(new ItemListener() {
-                @Override
-                public void itemStateChanged(ItemEvent e) {
-                    updateColumnComboBox(sheetComboBox.getSelectedItem().toString());
-                }
-            });
-            add(sheetComboBox);
-
-            add(new JLabel("指定工作簿中的列:"));
-            columnComboBox = new JComboBox<>();
-            add(columnComboBox);
-
-            // Check if there are items in the combo box
-            if (sheetComboBox.getItemCount() > 0) {
-                // Select the first item (sheet name)
-                sheetComboBox.setSelectedIndex(0);
-
-                // Update the column combo box based on the selected sheet
-                updateColumnComboBox(sheetComboBox.getSelectedItem().toString());
-            }
-
-            JCheckBox filterCheckBox = new JCheckBox("设置行号");
-            JTextField filterTextField = new JTextField();
-            filterTextField.setEnabled(false);
-            filterCheckBox.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    filterTextField.setEnabled(filterCheckBox.isSelected());
-                }
-            });
-
-            add(filterCheckBox);
-            add(filterTextField);
-
-            JButton removeButton = new JButton("移除当前行");
-            removeButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    removeDynamicPanel(DynamicPanel.this);
-                }
-            });
-
-            add(removeButton);
-        }
-
-        /**
-         * 获取选择路径下，所有excel的sheet名称列表
-         *
-         * @return
-         */
-        private String[] getSheetNames() {
-
-            allExcelSheetListWithFileNames = EasyExcelReadUtil.getAllExcelSheetListWithFileNames(uIhdq.getPath());
-            Set<String> excelSheetList = allExcelSheetListWithFileNames.keySet();
-            String[] sheetArray = excelSheetList.toArray(new String[0]);
-
-            return sheetArray;
-        }
-
-
-        /**
-         * 根据所选择的sheet名称，查询所有的列名称（可能同sheet名称，列名不一样的情况存在）
-         *
-         * @param selectedSheet
-         */
-        private void updateColumnComboBox(String selectedSheet) {
-            Set<String> columnNameListBySheet = new HashSet<>();
-            List<String> fileNameList = allExcelSheetListWithFileNames.get(selectedSheet);
-
-            for (String fileName : fileNameList) {
-                Set<String> columnNameListBySheet1 = EasyExcelReadUtil.getColumnNameListBySheet(fileName, selectedSheet);
-                columnNameListBySheet.addAll(columnNameListBySheet1);
-            }
-            columnComboBox.removeAllItems();
-            for (String column : columnNameListBySheet) {
-                columnComboBox.addItem(column);
-            }
-        }
-
-    }
 
     /**
      * 移除比较项
      *
      * @param panel
      */
-    private static void removeDynamicPanel(DynamicPanel panel) {
+    public static void removeDynamicPanel(DynamicPanel panel) {
         dynamicPanels.remove(panel);
         dynamicPanelContainer.remove(panel);
         dynamicPanelContainer.revalidate();

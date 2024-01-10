@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author yangliangchuang 2024-01-10 11:06
@@ -48,12 +49,15 @@ public class SearchMouseAdapter extends MouseAdapter {
             return; // 不执行后续的操作
         }
 
+        //Excel比较项
+        List<DynamicPanel> dynamicPanels = CampareItemUI.getDynamicPanels();
+
         docLocationTextArea.setText("开始处理：\n");
         docLocationTextArea.paintImmediately(docLocationTextArea.getBounds());
         if (index % 2 == 0) {
-            docLocationTextArea.setForeground(Color.BLACK); // 黑色
+            docLocationTextArea.setForeground(Color.BLACK);
         } else {
-            docLocationTextArea.setForeground(Color.magenta); // 紫色
+            docLocationTextArea.setForeground(Color.magenta);
         }
         index++;
 
@@ -61,7 +65,7 @@ public class SearchMouseAdapter extends MouseAdapter {
         String threshold = (String) comboBox.getSelectedItem();
         Double simThre = ThresholdUtil.getSimThre(threshold);
 
-        long startTime = System.currentTimeMillis(); // 获取开始时间
+        long startTime = System.currentTimeMillis();
         //是否开启多线程
         boolean multithreadingFlag = "2.多线程".equals(multithreadingBox.getSelectedItem());
         String excelPath = path + "\\相似度比对结果".concat("智能分词-" + "图片相似度比对-" + queryModeBox.getSelectedItem()).concat(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())).concat(".xlsx");
@@ -73,8 +77,8 @@ public class SearchMouseAdapter extends MouseAdapter {
                 default:
                     CompareOptimize.getSimilarityMode1(path, wordBox.isSelected(), picBox.isSelected(), simThre, excelPath, multithreadingFlag);
             }
-            long endTime = System.currentTimeMillis(); // 获取结束时间
-            System.out.println("所有文档相似度计算完成，共耗时：" + (endTime - startTime) / 1000 + "s"); // 输出程序运行时间
+            long endTime = System.currentTimeMillis();
+            System.out.println("所有文档相似度计算完成，共耗时：" + (endTime - startTime) / 1000 + "s");
         } catch (Exception ex) {
             System.out.println("计算出错,请检查后重试:" + ex);
         }
