@@ -1,7 +1,7 @@
 package pers.hdq.ui;
 
 import pers.hdq.util.EasyExcelReadUtil;
-import pers.hdq.util.SizeContants;
+import pers.hdq.util.Contants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,7 +30,7 @@ public class CampareItemUI {
      */
     public static JTabbedPane initJTabbedPane() {
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.setBounds(SizeContants.getTabbedPaneSize());
+        tabbedPane.setBounds(Contants.getTabbedPaneSize());
 
         JPanel excelComparisonPanel = CampareItemUI.createExcelComparisonPanel();
         tabbedPane.addTab("Excel文件比较", null, excelComparisonPanel, "设置比较项");
@@ -79,7 +79,7 @@ public class CampareItemUI {
                 "\n  5.Excel文件：可以设置“比较项”，即Excel文件的工作簿（sheet）、列、行。每次添加一个“比较项”，将两两比较所选文件夹中的Excel文件" +
                 "中该“比较项”的文本。如果“比较项”中只有一个Excel文件中有，则不会进行比较。");
         txtpnrnrncsvexcelrn.setToolTipText("使用说明");
-        txtpnrnrncsvexcelrn.setBounds(SizeContants.getTxtpnrnrncsvexcelrnSize());
+        txtpnrnrncsvexcelrn.setBounds(Contants.getTxtpnrnrncsvexcelrnSize());
 
         return txtpnrnrncsvexcelrn;
     }

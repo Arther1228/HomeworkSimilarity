@@ -1,6 +1,6 @@
 package pers.hdq.ui;
 
-import pers.hdq.util.SizeContants;
+import pers.hdq.util.Contants;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -102,7 +102,7 @@ public class UIhdq extends JPanel {
             JFrame frame = new JFrame("本地文档相似度比对系统");
 
             // 初始界面大小
-            frame.setBounds(SizeContants.getFrameSize());
+            frame.setBounds(Contants.getFrameSize());
             UIhdq uIhdq = new UIhdq();
             frame.getContentPane().add(uIhdq, BorderLayout.CENTER);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -1,6 +1,6 @@
 package pers.hdq.ui;
 
-import pers.hdq.util.SizeContants;
+import pers.hdq.util.Contants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,7 +35,7 @@ public class UiUtil {
         docLocationTextArea.setToolTipText("相似度比对结果");
         docLocationTextArea.setEditable(false);
         scrollPane1.setViewportView(docLocationTextArea);
-        scrollPane1.setBounds(SizeContants.getScrollPane1Size());
+        scrollPane1.setBounds(Contants.getScrollPane1Size());
 
         uIhdq.setDocLocationTextArea(docLocationTextArea);
         //scrollPane1.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
@@ -50,7 +50,7 @@ public class UiUtil {
         label1.setBounds(10, 0, 87, 25);
 
         panel1.add(label1);
-        panel1.setBounds(SizeContants.getPanel1Pane1Size());
+        panel1.setBounds(Contants.getPanel1Pane1Size());
 
         return panel1;
     }
@@ -63,7 +63,7 @@ public class UiUtil {
         JPanel tableShowJPanel = new JPanel();
         tableShowJPanel.setToolTipText("");
         tableShowJPanel.setLayout(null);
-        tableShowJPanel.setBounds(SizeContants.getTableShowJPanelSize());
+        tableShowJPanel.setBounds(Contants.getTableShowJPanelSize());
 
         return tableShowJPanel;
     }
@@ -121,47 +121,18 @@ public class UiUtil {
     public static JPanel initPanel2(UIhdq uIhdq) {
         JPanel panel2 = new JPanel();
 
-        panel2.setBounds(SizeContants.getPanel2Pane1Size());
-
+        panel2.setBounds(Contants.getPanel2Pane1Size());
         panel2.setLayout(new GridLayout(6, 1, 0, 3));
-        JCheckBox wordBox = new JCheckBox("打开智能分词");
-        wordBox.setFont(new Font("仿宋", Font.PLAIN, 16));
-        wordBox.setToolTipText("取消勾选会将每个词语分成最小颗粒。如：“笔记本电脑”=【笔记本电脑, 笔记本, 笔记, 电脑】，提高精度");
-        wordBox.setSelected(true);
+
+        JCheckBox wordBox = Contants.getWordBox();
         panel2.add(wordBox);
 
-        JCheckBox picBox = new JCheckBox("打开图片相似度比对");
-        picBox.setFont(new Font("仿宋", Font.PLAIN, 16));
-        picBox.setToolTipText("勾选后会对文档中图片进行比较，但会严重降低比较速度，当图片过多时计算会很慢");
+        JCheckBox picBox = Contants.getPicBox();
         panel2.add(picBox);
-        // sortBox = new JCheckBox("打开排序输出");
-        // sortBox.setFont(new Font("仿宋", Font.PLAIN, 16));
-        // sortBox.setToolTipText("勾选后输出相似度比对结果会按相似度降序排序！会增加运算时间,不建议勾选");
-        // panel2.add(sortBox);
 
-        JComboBox comboBox = new JComboBox<String>();
-        comboBox.setToolTipText("选择相似度阈值");
-        comboBox.addItem("选择相似度下限");
-        comboBox.addItem("20%");
-        comboBox.addItem("30%");
-        comboBox.addItem("40%");
-        comboBox.addItem("50%");
-        comboBox.addItem("60%");
-        comboBox.addItem("70%");
-        comboBox.addItem("80%");
-        comboBox.addItem("90%");
-        comboBox.addItem("95%");
-
-        JComboBox queryModeBox = new JComboBox<String>();
-        queryModeBox.setToolTipText("相似度比对模式 \n1、所有文档两两比较；");
-        queryModeBox.addItem("选择相似度比对模式");
-        queryModeBox.addItem("模式1:两两");
-
-        JComboBox multithreadingBox = new JComboBox<String>();
-        multithreadingBox.setToolTipText("开启多线程,速度更快;但更耗CPU资源");
-        multithreadingBox.addItem("线程模式");
-        multithreadingBox.addItem("1.单线程");
-        multithreadingBox.addItem("2.多线程");
+        JComboBox comboBox = Contants.getComboBox();
+        JComboBox queryModeBox = Contants.getQueryModeBox();
+        JComboBox multithreadingBox = Contants.getMultithreadingBox();
 
         JButton beginButton = new JButton("开始比对");
         beginButton.setForeground(Color.BLACK);
