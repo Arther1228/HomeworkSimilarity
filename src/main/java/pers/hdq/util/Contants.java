@@ -37,7 +37,7 @@ public class Contants {
 
 
     public static Rectangle getPanel2Pane1Size() {
-        return new Rectangle(808, 54, 132, 300);
+        return new Rectangle(790, 54, 150, 300);
     }
 
     public static JCheckBox getWordBox() {
@@ -57,6 +57,26 @@ public class Contants {
         picBox.setToolTipText("勾选后会对文档中图片进行比较，但会严重降低比较速度，当图片过多时计算会很慢");
 
         return picBox;
+    }
+
+    public static JPanel getRadioButtonPanel() {
+        JPanel radioButtonPanel = new JPanel();
+
+        radioButtonPanel.setLayout(new GridLayout(1, 2));
+        JRadioButton rb1 = new JRadioButton("Excel");
+        rb1.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+        JRadioButton rb2 = new JRadioButton("Word/Txt");
+        rb2.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        ButtonGroup group = new ButtonGroup();
+
+        group.add(rb1);
+        group.add(rb2);
+
+        radioButtonPanel.add(rb1);
+        radioButtonPanel.add(rb2);
+
+        return radioButtonPanel;
     }
 
 

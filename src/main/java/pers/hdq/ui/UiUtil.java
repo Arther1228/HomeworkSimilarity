@@ -122,13 +122,17 @@ public class UiUtil {
         JPanel panel2 = new JPanel();
 
         panel2.setBounds(Contants.getPanel2Pane1Size());
-        panel2.setLayout(new GridLayout(6, 1, 0, 3));
+        // 将布局改为 GridLayout(6, 1, 0, 3)，将 Excel 和 Word/Txt 放在同一行
+        panel2.setLayout(new GridLayout(5, 1, 10, 3));
 
         JCheckBox wordBox = Contants.getWordBox();
         panel2.add(wordBox);
 
         JCheckBox picBox = Contants.getPicBox();
-        panel2.add(picBox);
+//        panel2.add(picBox);
+
+        JPanel radioButtonPanel = Contants.getRadioButtonPanel();
+        panel2.add(radioButtonPanel);
 
         JComboBox comboBox = Contants.getComboBox();
         JComboBox queryModeBox = Contants.getQueryModeBox();
@@ -140,7 +144,7 @@ public class UiUtil {
         beginButton.addMouseListener(new SearchMouseAdapter(uIhdq, wordBox, picBox, comboBox, queryModeBox, multithreadingBox));
 
         panel2.add(comboBox);
-        panel2.add(queryModeBox);
+//        panel2.add(queryModeBox);
         panel2.add(multithreadingBox);
 
         panel2.add(beginButton);

@@ -31,7 +31,7 @@ public class CampareItemUI {
         tabbedPane.setBounds(Contants.getTabbedPaneSize());
 
         JPanel excelComparisonPanel = CampareItemUI.createExcelComparisonPanel(uIhdq);
-        tabbedPane.addTab("Excel文件比较", null, excelComparisonPanel, "设置比较项");
+        tabbedPane.addTab("Excel文件比较项设置", null, excelComparisonPanel, "设置比较项");
 //        JComponent wordTxt = makeTextPanel("直接选择比较的文件夹，点击开始比较，即可按照默认的两两文件进行比较相似度");
 //        tabbedPane.addTab("Word/Txt文件比较", null, wordTxt, "");
         JTextPane jDescriptionPane = initJTextPane();
