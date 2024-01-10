@@ -43,6 +43,11 @@ public class SearchMouseAdapter extends MouseAdapter {
         String path = uIhdq.getPath();
         JTextArea docLocationTextArea = uIhdq.getDocLocationTextArea();
 
+        if (path == null || path.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "请先选择文件夹路径", "提示", JOptionPane.WARNING_MESSAGE);
+            return; // 不执行后续的操作
+        }
+
         docLocationTextArea.setText("开始处理：\n");
         docLocationTextArea.paintImmediately(docLocationTextArea.getBounds());
         if (index % 2 == 0) {

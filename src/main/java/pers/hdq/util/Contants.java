@@ -63,7 +63,7 @@ public class Contants {
         JPanel radioButtonPanel = new JPanel();
 
         radioButtonPanel.setLayout(new GridLayout(1, 2));
-        JRadioButton rb1 = new JRadioButton("Excel");
+        JRadioButton rb1 = new JRadioButton("Excel", true);
         rb1.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
         JRadioButton rb2 = new JRadioButton("Word/Txt");

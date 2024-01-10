@@ -103,7 +103,11 @@ public class CampareItemUI {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                addDynamicPanel(uIhdq);
+                if (uIhdq.getPath() == null || uIhdq.getPath().isEmpty()) {
+                    JOptionPane.showMessageDialog(panel, "请先选择文件夹路径", "提示", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    addDynamicPanel(uIhdq);
+                }
             }
         });
 
