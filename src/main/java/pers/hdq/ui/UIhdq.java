@@ -60,7 +60,7 @@ public class UIhdq extends JPanel {
         UiUtil.initTextPathAndSearchButton(this, tableShowJPanel);
 
         // campare tabbedPane
-        JTabbedPane tabbedPane = CampareItemUI.initJTabbedPane();
+        JTabbedPane tabbedPane = CampareItemUI.initJTabbedPane(this);
         tableShowJPanel.add(tabbedPane);
 
         // ======== panel2 ========

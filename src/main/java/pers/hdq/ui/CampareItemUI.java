@@ -18,8 +18,6 @@ import java.util.Set;
  */
 public class CampareItemUI {
 
-    private static String testPath = "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\GBT37735——2019.xlsx";
-
     private static List<DynamicPanel> dynamicPanels = new ArrayList<>();
 
     private static JPanel dynamicPanelContainer;
@@ -28,11 +26,11 @@ public class CampareItemUI {
     /**
      * 初始化标签页
      */
-    public static JTabbedPane initJTabbedPane() {
+    public static JTabbedPane initJTabbedPane(UIhdq uIhdq) {
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setBounds(Contants.getTabbedPaneSize());
 
-        JPanel excelComparisonPanel = CampareItemUI.createExcelComparisonPanel();
+        JPanel excelComparisonPanel = CampareItemUI.createExcelComparisonPanel(uIhdq);
         tabbedPane.addTab("Excel文件比较", null, excelComparisonPanel, "设置比较项");
         JComponent wordTxt = makeTextPanel("直接选择比较的文件夹，点击开始比较，即可按照默认的两两文件进行比较相似度");
         tabbedPane.addTab("Word/Txt文件比较", null, wordTxt, "");
@@ -89,7 +87,7 @@ public class CampareItemUI {
      *
      * @return
      */
-    public static JPanel createExcelComparisonPanel() {
+    public static JPanel createExcelComparisonPanel(UIhdq uIhdq) {
         JPanel panel = new JPanel(new BorderLayout());
 
         JPanel titlePanel = new JPanel();
@@ -105,7 +103,7 @@ public class CampareItemUI {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                addDynamicPanel();
+                addDynamicPanel(uIhdq);
             }
         });
 
@@ -121,8 +119,8 @@ public class CampareItemUI {
     /**
      * 动态添加选项
      */
-    private static void addDynamicPanel() {
-        DynamicPanel dynamicPanel = new DynamicPanel();
+    private static void addDynamicPanel(UIhdq uIhdq) {
+        DynamicPanel dynamicPanel = new DynamicPanel(uIhdq);
         dynamicPanels.add(dynamicPanel);
 
         dynamicPanelContainer.add(dynamicPanel);
@@ -138,7 +136,10 @@ public class CampareItemUI {
         private JComboBox<String> sheetComboBox;
         private JComboBox<String> columnComboBox;
 
-        public DynamicPanel() {
+        private UIhdq uIhdq;
+
+        public DynamicPanel( UIhdq uIhdq) {
+            this.uIhdq = uIhdq;
 
             setLayout(new GridLayout(1, 6));
             setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
@@ -189,7 +190,7 @@ public class CampareItemUI {
          */
         private String[] getSheetNames() {
 
-            Set<String> excelSheetList = EasyExcelReadUtil.getExcelSheetList(testPath);
+            Set<String> excelSheetList = EasyExcelReadUtil.getExcelSheetList(uIhdq.getPath());
             String[] sheetArray = excelSheetList.toArray(new String[0]);
 
             return sheetArray;
@@ -202,7 +203,7 @@ public class CampareItemUI {
          * @param selectedSheet
          */
         private void updateColumnComboBox(String selectedSheet) {
-            Set<String> columnNameListBySheet = EasyExcelReadUtil.getColumnNameListBySheet(testPath, selectedSheet);
+            Set<String> columnNameListBySheet = EasyExcelReadUtil.getColumnNameListBySheet(uIhdq.getPath(), selectedSheet);
 
             columnComboBox.removeAllItems();
             for (String column : columnNameListBySheet) {
