@@ -84,6 +84,12 @@
             <version>3.12.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.16</version>
+        </dependency>
+
     </dependencies>
     <build>
         <!-- 产生的构件的文件名，默认值是${artifactId}-${version}。 -->

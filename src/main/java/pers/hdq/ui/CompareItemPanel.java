@@ -1,6 +1,5 @@
 package pers.hdq.ui;
 
-import pers.hdq.util.EasyExcelReadUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,10 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * 比较项
@@ -27,12 +24,7 @@ public class CompareItemPanel extends JPanel {
     // row
     private JTextField filterTextField;
 
-    private Map<String, List<String>> allExcelSheetListWithFileNames;
-
-    private UIhdq uIhdq;
-
-    public CompareItemPanel(UIhdq uIhdq) {
-        this.uIhdq = uIhdq;
+    public CompareItemPanel() {
 
         setLayout(new GridLayout(1, 6));
         setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
@@ -88,9 +80,9 @@ public class CompareItemPanel extends JPanel {
      * @return
      */
     private String[] getSheetNames() {
+        Map<String, List<String>> allSheetWithFileNames = UiTabbedPane.getAllExcelSheetListWithFileNames();
 
-        allExcelSheetListWithFileNames = EasyExcelReadUtil.getAllExcelSheetListWithFileNames(uIhdq.getPath());
-        Set<String> excelSheetList = allExcelSheetListWithFileNames.keySet();
+        Set<String> excelSheetList = allSheetWithFileNames.keySet();
         String[] sheetArray = excelSheetList.toArray(new String[0]);
 
         return sheetArray;
@@ -104,18 +96,21 @@ public class CompareItemPanel extends JPanel {
      */
     private void updateColumnComboBox(String selectedSheet) {
 
+        Map<String, List<String>> allSheetWithFileNames = UiTabbedPane.getAllExcelSheetListWithFileNames();
+        Map<String, List<String>> allFileNameWithColumns = UiTabbedPane.getAllFileNameWithColumns();
+
         Set<String> columnNameListBySheet = new HashSet<>();
-        List<String> fileNameList = allExcelSheetListWithFileNames.get(selectedSheet);
+        List<String> fileNameList = allSheetWithFileNames.get(selectedSheet);
 
         for (String fileName : fileNameList) {
-            Set<String> columnNameListBySheet1 = EasyExcelReadUtil.getColumnNameListBySheet(fileName, selectedSheet);
+            String key = fileName + "-" + selectedSheet;
+            List<String> columnNameListBySheet1 = allFileNameWithColumns.get(key);
             columnNameListBySheet.addAll(columnNameListBySheet1);
         }
         columnComboBox.removeAllItems();
         for (String column : columnNameListBySheet) {
             columnComboBox.addItem(column);
         }
-
     }
 
 }

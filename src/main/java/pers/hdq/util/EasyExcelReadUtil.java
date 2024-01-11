@@ -9,9 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,31 +22,43 @@ public class EasyExcelReadUtil {
     /**
      * 文件夹中的所有sheet的名称：文件名称
      *
-     * @param folderPath
      * @return
      */
-    public static Map<String, List<String>> getAllExcelSheetListWithFileNames(String folderPath) {
-        Map<String, List<String>> sheetNameFileMap = new HashMap<>();
+    public static Map<String, List<String>> getAllExcelSheetListWithFileNames(String path) {
+        List<String> allExcelFiles = HutoolExcelUtil.getAllExcelFilePaths(path);
+        Map<String, List<String>> sheetNameFileMap = new HashMap<>(10);
 
-        try {
-            Files.walk(Paths.get(folderPath))
-                    .filter(path -> path.toString().toLowerCase().endsWith(".xls") || path.toString().toLowerCase().endsWith(".xlsx"))
-                    .forEach(filePath -> {
-                        try {
-                            Set<String> sheetNames = getExcelSheetList(filePath.toString());
-                            for (String sheetName : sheetNames) {
-                                // Update the map to include the file name for the sheet
-                                sheetNameFileMap.computeIfAbsent(sheetName, k -> new ArrayList<>()).add(filePath.toString());
-                            }
-                        } catch (Exception e) {
-                            log.error("Error reading Excel file: {}", filePath, e);
-                        }
-                    });
-        } catch (IOException e) {
-            log.error("Error traversing folder: {}", folderPath, e);
+        for (String filePath : allExcelFiles) {
+            Set<String> sheetNames = getExcelSheetList(filePath);
+            for (String sheetName : sheetNames) {
+                sheetNameFileMap.computeIfAbsent(sheetName, k -> new ArrayList<>()).add(filePath);
+            }
         }
 
         return sheetNameFileMap;
+    }
+
+    /**
+     * 获取指定路径下所有Excel文件的列名信息
+     *
+     * @param folderPath 指定路径
+     * @return Map，键为"文件名-sheet名"，值为列名列表
+     */
+    public static Map<String, List<String>> getAllExcelColumnNames(String folderPath) {
+        List<String> allExcelFiles = HutoolExcelUtil.getAllExcelFilePaths(folderPath);
+
+        Map<String, List<String>> columnNameMap = new HashMap<>(10);
+        for (String filePath : allExcelFiles) {
+            Set<String> sheetNames = getExcelSheetList(filePath);
+
+            for (String sheetName : sheetNames) {
+                Set<String> columnNames = getColumnNameListBySheet(filePath, sheetName);
+                String key = filePath + "-" + sheetName;
+                columnNameMap.put(key, new ArrayList<>(columnNames));
+            }
+        }
+
+        return columnNameMap;
     }
 
 
@@ -83,6 +92,7 @@ public class EasyExcelReadUtil {
         return headNameSet;
 
     }
+
 
     /**
      * 查询指定sheet、列名、行号的内容

@@ -1,26 +1,52 @@
 package pers.hdq.ui;
 
 import pers.hdq.util.Contants;
+import pers.hdq.util.EasyExcelReadUtil;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yangliangchuang 2024-01-09 16:20
  */
 public class UiTabbedPane {
 
-    private static List<CompareItemPanel> compareItemPanels = new ArrayList<>();
 
     private static JPanel dynamicPanelContainer;
+
+    /**
+     * 比较项列表
+     */
+    private static List<CompareItemPanel> compareItemPanels = new ArrayList<>();
 
     public static List<CompareItemPanel> getCompareItemPanels() {
         return compareItemPanels;
     }
+
+    /**
+     * sheet:文件列表
+     */
+    private static Map<String, List<String>> allExcelSheetListWithFileNames = new HashMap<>();
+
+    public static Map<String, List<String>> getAllExcelSheetListWithFileNames() {
+        return allExcelSheetListWithFileNames;
+    }
+
+    /**
+     * 文件全名：全有列
+     */
+    private static Map<String, List<String>> allFileNameWithColumns = new HashMap<>();
+
+    public static Map<String, List<String>> getAllFileNameWithColumns() {
+        return allFileNameWithColumns;
+    }
+
     /**
      * 初始化标签页
      */
@@ -51,7 +77,7 @@ public class UiTabbedPane {
         txtpnrnrncsvexcelrn.setText("使用说明：\r\n  1.相似度比对前请将待相似度比对文档放入文件夹中，然后点击“选择比对路径”按钮选择该文件夹，点击“开始相似度比对”按钮，开始比对；" +
                 "\n  2.相似度比对结果存储于所选文件夹中以“相似度比对结果”开头的Excel表格中；" +
                 "\n  3.“简略结果”表列出每个文件及其最相似文件，详细结果表列出全部结果；超过相似度阈值名单会列出相似度超过在选定阈值的文件名。" +
-                "\n  4.Word/txt文件：目前只支持整个文件两两比较，不支持选择文本段落。" +
+                "\n  4.Word/Txt文件：目前只支持整个文件两两比较，不支持选择文本段落。" +
                 "\n  5.Excel文件：可以设置“比较项”，即Excel文件的工作簿（sheet）、列、行。每次添加一个“比较项”，将两两比较所选文件夹中的Excel文件" +
                 "中该“比较项”的文本。如果“比较项”中只有一个Excel文件中有，则不会进行比较。");
         txtpnrnrncsvexcelrn.setToolTipText("使用说明");
@@ -85,7 +111,7 @@ public class UiTabbedPane {
                 if (uIhdq.getPath() == null || uIhdq.getPath().isEmpty()) {
                     JOptionPane.showMessageDialog(panel, "请先选择比对路径", "提示", JOptionPane.WARNING_MESSAGE);
                 } else {
-                    addDynamicPanel(uIhdq);
+                    addDynamicPanel();
                 }
             }
         });
@@ -99,11 +125,12 @@ public class UiTabbedPane {
         return panel;
     }
 
+
     /**
      * 动态添加选项
      */
-    private static void addDynamicPanel(UIhdq uIhdq) {
-        CompareItemPanel compareItemPanel = new CompareItemPanel(uIhdq);
+    private static void addDynamicPanel() {
+        CompareItemPanel compareItemPanel = new CompareItemPanel();
         compareItemPanels.add(compareItemPanel);
 
         dynamicPanelContainer.add(compareItemPanel);
@@ -119,6 +146,7 @@ public class UiTabbedPane {
      */
     public static void removeDynamicPanel(CompareItemPanel panel) {
         compareItemPanels.remove(panel);
+
         dynamicPanelContainer.remove(panel);
         dynamicPanelContainer.revalidate();
         dynamicPanelContainer.repaint();
@@ -129,9 +157,20 @@ public class UiTabbedPane {
      */
     public static void removeAllDynamicPanels() {
         compareItemPanels.clear();
+
         dynamicPanelContainer.removeAll();
         dynamicPanelContainer.revalidate();
         dynamicPanelContainer.repaint();
+    }
+
+
+    /**
+     * 初始化Excel内容
+     * @param path
+     */
+    public static void initExcelContent(String path){
+        allExcelSheetListWithFileNames = EasyExcelReadUtil.getAllExcelSheetListWithFileNames(path);
+        allFileNameWithColumns = EasyExcelReadUtil.getAllExcelColumnNames(path);
     }
 
 }

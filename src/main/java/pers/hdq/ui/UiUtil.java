@@ -89,7 +89,9 @@ public class UiUtil {
         compareJPanel.add(textPath);
 
         //方便测试
+        textPath.setText("C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123");
         uIhdq.setPath("C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123");
+        UiTabbedPane.initExcelContent("C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123");
 
         // ---- searchButton ----
         JButton searchButton = new JButton();
@@ -108,6 +110,7 @@ public class UiUtil {
                         String tempPath = file.getPath();
                         textPath.setText(tempPath);
                         uIhdq.setPath(tempPath);
+                        UiTabbedPane.initExcelContent(tempPath);
                     }
                 }
             }
@@ -150,7 +153,5 @@ public class UiUtil {
         startComparePanel.add(beginButton);
         return startComparePanel;
     }
-
-
 
 }

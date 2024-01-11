@@ -27,6 +27,13 @@ public class EasyExcelReadUtilTest {
 
 
     @Test
+    public void getAllExcelColumnNames(){
+
+        Map<String, List<String>> allExcelSheetListWithFileNames = EasyExcelReadUtil.getAllExcelColumnNames(path);
+        System.out.println(allExcelSheetListWithFileNames);
+    }
+
+    @Test
     public void getExcelSheetList() {
 
         Set<String> excelSheetList = EasyExcelReadUtil.getExcelSheetList(filePath);
