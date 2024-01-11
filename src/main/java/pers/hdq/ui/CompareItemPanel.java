@@ -24,6 +24,18 @@ public class CompareItemPanel extends JPanel {
     // row
     private JTextField filterTextField;
 
+    public JComboBox<String> getSheetComboBox() {
+        return sheetComboBox;
+    }
+
+    public JComboBox<String> getColumnComboBox() {
+        return columnComboBox;
+    }
+
+    public JTextField getFilterTextField() {
+        return filterTextField;
+    }
+
     public CompareItemPanel() {
 
         setLayout(new GridLayout(1, 6));

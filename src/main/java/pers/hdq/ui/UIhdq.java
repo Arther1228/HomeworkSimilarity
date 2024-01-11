@@ -29,7 +29,12 @@ public class UIhdq extends JPanel {
      */
     private JTextArea docLocationTextArea;
 
+    /**
+     * Excel比较tab页 添加按钮
+     */
     private JButton addButton;
+
+    private String compareType;
 
     public String getPath() {
         return path;
@@ -55,6 +60,13 @@ public class UIhdq extends JPanel {
         this.addButton = addButton;
     }
 
+    public String getCompareType() {
+        return compareType;
+    }
+
+    public void setCompareType(String compareType) {
+        this.compareType = compareType;
+    }
 
     public UIhdq() {
 

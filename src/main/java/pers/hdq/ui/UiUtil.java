@@ -144,7 +144,7 @@ public class UiUtil {
         JButton beginButton = new JButton("开始比对");
         beginButton.setForeground(Color.BLACK);
         beginButton.setFont(new Font("仿宋", Font.BOLD, 20));
-        beginButton.addMouseListener(new CompareMouseAdapter(uIhdq, wordBox, picBox, comboBox, queryModeBox, multithreadingBox));
+        beginButton.addMouseListener(new CompareMouseAdapter(uIhdq, wordBox, comboBox, multithreadingBox));
 
         startComparePanel.add(comboBox);
 //        startComparePanel.add(queryModeBox);

@@ -1,5 +1,6 @@
 package pers.hdq.ui;
 
+import pers.hdq.model.ExcelCompareEntity;
 import pers.hdq.util.Contants;
 import pers.hdq.util.EasyExcelReadUtil;
 
@@ -25,23 +26,19 @@ public class UiTabbedPane {
      */
     private static List<CompareItemPanel> compareItemPanels = new ArrayList<>();
 
-    public static List<CompareItemPanel> getCompareItemPanels() {
-        return compareItemPanels;
-    }
-
     /**
      * sheet:文件列表
      */
     private static Map<String, List<String>> allExcelSheetListWithFileNames = new HashMap<>();
 
-    public static Map<String, List<String>> getAllExcelSheetListWithFileNames() {
-        return allExcelSheetListWithFileNames;
-    }
-
     /**
      * 文件全名：全有列
      */
     private static Map<String, List<String>> allFileNameWithColumns = new HashMap<>();
+
+    public static Map<String, List<String>> getAllExcelSheetListWithFileNames() {
+        return allExcelSheetListWithFileNames;
+    }
 
     public static Map<String, List<String>> getAllFileNameWithColumns() {
         return allFileNameWithColumns;
@@ -166,11 +163,35 @@ public class UiTabbedPane {
 
     /**
      * 初始化Excel内容
+     *
      * @param path
      */
-    public static void initExcelContent(String path){
+    public static void initExcelContent(String path) {
         allExcelSheetListWithFileNames = EasyExcelReadUtil.getAllExcelSheetListWithFileNames(path);
         allFileNameWithColumns = EasyExcelReadUtil.getAllExcelColumnNames(path);
+    }
+
+    /**
+     * 获取比较项内容
+     *
+     * @return
+     */
+    public static List<ExcelCompareEntity> getExcelCompareEntityList() {
+        List<ExcelCompareEntity> excelCompareEntityList = new ArrayList<>();
+
+        for (CompareItemPanel compareItemPanel : compareItemPanels) {
+            String sheetName = compareItemPanel.getSheetComboBox().getSelectedItem().toString();
+            String columnName = compareItemPanel.getColumnComboBox().getSelectedItem().toString();
+            String lineNumber = compareItemPanel.getFilterTextField().getText();
+
+            ExcelCompareEntity excelCompareEntity = ExcelCompareEntity.builder()
+                    .sheetName(sheetName).cloumnName(columnName).lineNumber(lineNumber).build();
+
+            excelCompareEntityList.add(excelCompareEntity);
+        }
+
+        return excelCompareEntityList;
+
     }
 
 }

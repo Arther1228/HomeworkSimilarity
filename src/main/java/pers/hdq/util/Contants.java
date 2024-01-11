@@ -13,6 +13,21 @@ import java.awt.event.ItemListener;
  */
 public class Contants {
 
+    public enum CompareFileType {
+
+        EXCEL("Excel"),
+        WORD_TXT("Word/Txt");
+
+        private String name;
+
+        CompareFileType(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
 
     public static Rectangle getFrameSize() {
         return new Rectangle(500, 100, 1000, 800);
@@ -66,10 +81,11 @@ public class Contants {
         JPanel radioButtonPanel = new JPanel();
 
         radioButtonPanel.setLayout(new GridLayout(1, 2));
-        JRadioButton rb1 = new JRadioButton("Excel", true);
+        JRadioButton rb1 = new JRadioButton(CompareFileType.EXCEL.getName(), true);
+        uIhdq.setCompareType(CompareFileType.EXCEL.getName());
         rb1.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-        JRadioButton rb2 = new JRadioButton("Word/Txt");
+        JRadioButton rb2 = new JRadioButton(CompareFileType.WORD_TXT.getName());
         rb2.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         ButtonGroup group = new ButtonGroup();
 
@@ -85,6 +101,7 @@ public class Contants {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     uIhdq.getAddButton().setEnabled(true);
+                    uIhdq.setCompareType(rb1.getText());
                 }
             }
         });
@@ -95,7 +112,7 @@ public class Contants {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     uIhdq.getAddButton().setEnabled(false);
-
+                    uIhdq.setCompareType(rb2.getText());
                     //移除所有比较项
                     UiTabbedPane.removeAllDynamicPanels();
                 }

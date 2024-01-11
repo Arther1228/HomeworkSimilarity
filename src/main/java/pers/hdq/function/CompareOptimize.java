@@ -27,13 +27,12 @@ public class CompareOptimize {
      * @param ikFlag         是否打开智能分词，为false显示最小粒度分词结果
      * @param pictureSimFlag 是否计算文档中图片相似度，为是会增加准确率，但会极大增加运算时间
      * @param threshold      相似度阈值
-     * @param excelPath      excel绝对路径
      *
      * @author HuDaoquan
      * @date 2022/6/15 14:50
      **/
     public static void getSimilarityMode1(String path, Boolean ikFlag, Boolean pictureSimFlag,
-                                          Double threshold, String excelPath, Boolean multithreadingFlag) throws Exception {
+                                          Double threshold, Boolean multithreadingFlag) throws Exception {
 
         System.out.println("开始扫描文档,当前时间:" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
         /*  递归遍历目录；获取所有文档绝对路径*/
@@ -79,8 +78,7 @@ public class CompareOptimize {
         // sheet1中详细所有数据
         List<SimilarityOutEntity> detailList = Collections.synchronizedList(new ArrayList<>(detailSize));
         // sheet2中简略结果数据
-        List<SimilarityOutEntity> sortMaxResultList =
-                Collections.synchronizedList(new ArrayList<>(allDocAbsolutePath.size()));
+        List<SimilarityOutEntity> sortMaxResultList = Collections.synchronizedList(new ArrayList<>(allDocAbsolutePath.size()));
         // sheet3中超过相似度阈值名单
         List<PlagiarizeEntity> plagiarizeEntityList = Collections.synchronizedList(new ArrayList<>());
         //选择线程类型
@@ -111,10 +109,11 @@ public class CompareOptimize {
         }
 
         if (detailList.isEmpty()) {
-            SimilarityOutEntity similarityOutEntity =
-                    SimilarityOutEntity.builder().judgeResult("本次比较详细结果将超过" + sumCount + "行,防止excel崩溃,此次详细结果不输出,请参考简略结果").build();
+            SimilarityOutEntity similarityOutEntity = SimilarityOutEntity.builder().judgeResult("本次比较详细结果将超过" + sumCount + "行,防止excel崩溃,此次详细结果不输出,请参考简略结果").build();
             detailList.add(similarityOutEntity);
         }
+
+        String excelPath = path + "\\相似度比对结果".concat("智能分词-" + "相似度比对-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()).concat(".xlsx"));
         // 排序并导出excel
         CommonFunction.sortAndImportExcel(excelPath, detailList, sortMaxResultList, plagiarizeEntityList);
     }
