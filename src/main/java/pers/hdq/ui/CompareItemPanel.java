@@ -16,19 +16,22 @@ import java.util.Set;
 /**
  * 比较项
  */
-public class DynamicPanel extends JPanel {
+public class CompareItemPanel extends JPanel {
 
+    // sheet
     private JComboBox<String> sheetComboBox;
 
+    // column
     private JComboBox<String> columnComboBox;
 
+    // row
     private JTextField filterTextField;
 
     private Map<String, List<String>> allExcelSheetListWithFileNames;
 
     private UIhdq uIhdq;
 
-    public DynamicPanel(UIhdq uIhdq) {
+    public CompareItemPanel(UIhdq uIhdq) {
         this.uIhdq = uIhdq;
 
         setLayout(new GridLayout(1, 6));
@@ -36,6 +39,7 @@ public class DynamicPanel extends JPanel {
 
         add(new JLabel("选择工作簿名称:"));
         sheetComboBox = new JComboBox<>(getSheetNames());
+        sheetComboBox.setFont(new Font("仿宋", Font.PLAIN, 16));
         sheetComboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -46,6 +50,7 @@ public class DynamicPanel extends JPanel {
 
         add(new JLabel("指定工作簿中的列:"));
         columnComboBox = new JComboBox<>();
+        columnComboBox.setFont(new Font("仿宋", Font.PLAIN, 16));
         add(columnComboBox);
 
         if (sheetComboBox.getItemCount() > 0) {
@@ -70,7 +75,7 @@ public class DynamicPanel extends JPanel {
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CampareItemUI.removeDynamicPanel(DynamicPanel.this);
+                UiTabbedPane.removeDynamicPanel(CompareItemPanel.this);
             }
         });
 

@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author yangliangchuang 2024-01-10 11:06
  */
-public class SearchMouseAdapter extends MouseAdapter {
+public class CompareMouseAdapter extends MouseAdapter {
 
     private int index = 1;
 
@@ -30,7 +30,7 @@ public class SearchMouseAdapter extends MouseAdapter {
 
     private JComboBox multithreadingBox;
 
-    public SearchMouseAdapter(UIhdq uIhdq, JCheckBox wordBox, JCheckBox picBox, JComboBox comboBox, JComboBox queryModeBox, JComboBox multithreadingBox) {
+    public CompareMouseAdapter(UIhdq uIhdq, JCheckBox wordBox, JCheckBox picBox, JComboBox comboBox, JComboBox queryModeBox, JComboBox multithreadingBox) {
         this.uIhdq = uIhdq;
         this.wordBox = wordBox;
         this.picBox = picBox;
@@ -50,7 +50,7 @@ public class SearchMouseAdapter extends MouseAdapter {
         }
 
         //Excel比较项
-        List<DynamicPanel> dynamicPanels = CampareItemUI.getDynamicPanels();
+        List<CompareItemPanel> compareItemPanels = UiTabbedPane.getCompareItemPanels();
 
         docLocationTextArea.setText("开始处理：\n");
         docLocationTextArea.paintImmediately(docLocationTextArea.getBounds());

@@ -5,6 +5,8 @@ import pers.hdq.util.Contants;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 /**
  * @author HuDaoquan
@@ -58,29 +60,29 @@ public class UIhdq extends JPanel {
 
         initFrameStyle();
 
-        // ======== panel1 ========
-        JPanel panel1 = UiUtil.initResultPanel(this);
-        add(panel1);
+        // ======== resultPanel ========
+        JPanel resultPanel = UiUtil.initResultPanel(this);
+        add(resultPanel);
 
-        // ======== tableShowJPanel ========
-        JPanel tableShowJPanel = UiUtil.initTableShowJPanel();
-        add(tableShowJPanel);
+        // ======== compareJPanel ========
+        JPanel compareJPanel = UiUtil.initCompareJPanel();
+        add(compareJPanel);
 
         //search button
-        UiUtil.initTextPathAndSearchButton(this, tableShowJPanel);
+        UiUtil.initTextPathAndSearchButton(this, compareJPanel);
 
-        // campare tabbedPane
-        JTabbedPane tabbedPane = CampareItemUI.initJTabbedPane(this);
-        tableShowJPanel.add(tabbedPane);
+        // compare tabbedPane
+        JTabbedPane tabbedPane = UiTabbedPane.initJTabbedPane(this);
+        compareJPanel.add(tabbedPane);
 
-        // ======== panel2 ========
-        JPanel panel2 = UiUtil.initPanel2(this);
-        tableShowJPanel.add(panel2);
+        // ======== startComparePanel ========
+        JPanel startComparePanel = UiUtil.initStartComparePanel(this);
+        compareJPanel.add(startComparePanel);
 
         // ===== show border
-/*        panel1.setBorder(BorderFactory.createLineBorder(Color.red, 2));
-        tableShowJPanel.setBorder(BorderFactory.createLineBorder(Color.black, 2));
-        panel2.setBorder(BorderFactory.createLineBorder(Color.green, 2));*/
+/*        resultPanel.setBorder(BorderFactory.createLineBorder(Color.red, 2));
+        compareJPanel.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+        startComparePanel.setBorder(BorderFactory.createLineBorder(Color.green, 2));*/
     }
 
 
@@ -106,6 +108,38 @@ public class UIhdq extends JPanel {
         setLayout(new GridLayout(2, 1, 0, 5));
     }
 
+    /**
+     * 控制台重定向
+     *
+     * @param
+     */
+    public static void redirectConsole(UIhdq uIhdq) {
+        JTextArea docLocationTextArea = uIhdq.getDocLocationTextArea();
+
+        OutputStream textAreaStream = new OutputStream() {
+            @Override
+            public void write(int b) {
+                docLocationTextArea.append(String.valueOf((char) b));
+                docLocationTextArea.paintImmediately(docLocationTextArea.getBounds());// 实时输出
+            }
+
+            @Override
+            public void write(byte b[]) {
+                docLocationTextArea.append(new String(b));
+                docLocationTextArea.paintImmediately(docLocationTextArea.getBounds());// 实时输出
+            }
+
+            @Override
+            public void write(byte b[], int off, int len) {
+                docLocationTextArea.append(new String(b, off, len));
+                docLocationTextArea.paintImmediately(docLocationTextArea.getBounds());// 实时输出
+            }
+        };
+        PrintStream myOut = new PrintStream(textAreaStream);
+        System.setOut(myOut);
+        System.setErr(myOut);
+    }
+
 
     public static void main(String args[]) {
         try {
@@ -118,7 +152,7 @@ public class UIhdq extends JPanel {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setVisible(true);
 
-            UiUtil.redirectConsole(uIhdq);
+            redirectConsole(uIhdq);
 
         } catch (Exception e) {
             e.printStackTrace();

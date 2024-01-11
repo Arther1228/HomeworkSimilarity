@@ -12,14 +12,14 @@ import java.util.List;
 /**
  * @author yangliangchuang 2024-01-09 16:20
  */
-public class CampareItemUI {
+public class UiTabbedPane {
 
-    private static List<DynamicPanel> dynamicPanels = new ArrayList<>();
+    private static List<CompareItemPanel> compareItemPanels = new ArrayList<>();
 
     private static JPanel dynamicPanelContainer;
 
-    public static List<DynamicPanel> getDynamicPanels() {
-        return dynamicPanels;
+    public static List<CompareItemPanel> getCompareItemPanels() {
+        return compareItemPanels;
     }
     /**
      * 初始化标签页
@@ -103,10 +103,10 @@ public class CampareItemUI {
      * 动态添加选项
      */
     private static void addDynamicPanel(UIhdq uIhdq) {
-        DynamicPanel dynamicPanel = new DynamicPanel(uIhdq);
-        dynamicPanels.add(dynamicPanel);
+        CompareItemPanel compareItemPanel = new CompareItemPanel(uIhdq);
+        compareItemPanels.add(compareItemPanel);
 
-        dynamicPanelContainer.add(dynamicPanel);
+        dynamicPanelContainer.add(compareItemPanel);
         dynamicPanelContainer.revalidate();
         dynamicPanelContainer.repaint();
     }
@@ -117,9 +117,19 @@ public class CampareItemUI {
      *
      * @param panel
      */
-    public static void removeDynamicPanel(DynamicPanel panel) {
-        dynamicPanels.remove(panel);
+    public static void removeDynamicPanel(CompareItemPanel panel) {
+        compareItemPanels.remove(panel);
         dynamicPanelContainer.remove(panel);
+        dynamicPanelContainer.revalidate();
+        dynamicPanelContainer.repaint();
+    }
+
+    /**
+     * 移除所有比较项
+     */
+    public static void removeAllDynamicPanels() {
+        compareItemPanels.clear();
+        dynamicPanelContainer.removeAll();
         dynamicPanelContainer.revalidate();
         dynamicPanelContainer.repaint();
     }

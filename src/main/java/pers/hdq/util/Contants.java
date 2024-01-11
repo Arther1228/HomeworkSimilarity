@@ -1,5 +1,6 @@
 package pers.hdq.util;
 
+import pers.hdq.ui.UiTabbedPane;
 import pers.hdq.ui.UIhdq;
 
 import javax.swing.*;
@@ -17,7 +18,7 @@ public class Contants {
         return new Rectangle(500, 100, 1000, 800);
     }
 
-    public static Rectangle getPanel1Pane1Size() {
+    public static Rectangle getResultPanelPane1Size() {
         return new Rectangle(10, 30, 900, 250);
     }
 
@@ -25,7 +26,7 @@ public class Contants {
         return new Rectangle(10, 30, 950, 320);
     }
 
-    public static Rectangle getTableShowJPanelSize() {
+    public static Rectangle getComparePanelSize() {
         return new Rectangle(10, 30, 900, 600);
     }
 
@@ -94,6 +95,9 @@ public class Contants {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     uIhdq.getAddButton().setEnabled(false);
+
+                    //移除所有比较项
+                    UiTabbedPane.removeAllDynamicPanels();
                 }
             }
         });
