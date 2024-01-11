@@ -1,7 +1,7 @@
 package pers.hdq.ui;
 
 import pers.hdq.function.CompareOptimize;
-import pers.hdq.model.ExcelCompareEntity;
+import pers.hdq.model.ExcelCompareItem;
 import pers.hdq.util.CompareFileType;
 import pers.hdq.util.ThresholdUtil;
 
@@ -64,9 +64,9 @@ public class CompareMouseAdapter extends MouseAdapter {
 
             if(CompareFileType.EXCEL.getName().equals(compareType)){
                 //Excel比较项
-                Set<ExcelCompareEntity> excelCompareEntityList = UiTabbedPane.getExcelCompareEntityList();
+                Set<ExcelCompareItem> excelCompareItemList = UiTabbedPane.getExcelCompareItemList();
                 //打印比较项
-                docLocationTextArea.append(ExcelCompareEntity.toString(excelCompareEntityList));
+                docLocationTextArea.append(ExcelCompareItem.toString(excelCompareItemList));
 
             }else if(CompareFileType.WORD_TXT.getName().equals(compareType)){
                 CompareOptimize.getSimilarityMode1(path, wordBox.isSelected(), false, simThre, multithreadingFlag);

@@ -31,7 +31,7 @@ public class PlagiarizeEntity {
     /**
      * 超过相似度阈值文件名
      **/
-    @ColumnWidth(15)
+    @ColumnWidth(55)
     @ExcelProperty(value = "超过相似度阈值文件名", index = 0)
     private String docName;
 

@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Data
 @Builder
-public class ExcelCompareEntity {
+public class ExcelCompareItem {
 
     private String sheetName;
 
@@ -25,7 +25,7 @@ public class ExcelCompareEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ExcelCompareEntity that = (ExcelCompareEntity) o;
+        ExcelCompareItem that = (ExcelCompareItem) o;
         return Objects.equals(sheetName, that.sheetName) &&
                 Objects.equals(cloumnName, that.cloumnName) &&
                 Objects.equals(lineNumber, that.lineNumber);
@@ -36,17 +36,17 @@ public class ExcelCompareEntity {
         return Objects.hash(sheetName, cloumnName, lineNumber);
     }
 
-    public static String toString(Set<ExcelCompareEntity> excelCompareEntityList) {
+    public static String toString(Set<ExcelCompareItem> excelCompareItemList) {
         StringBuilder stringBuilder = new StringBuilder();
         int index = 1;
-        for (ExcelCompareEntity excelCompareEntity : excelCompareEntityList) {
+        for (ExcelCompareItem excelCompareItem : excelCompareItemList) {
             stringBuilder.append("[比较项" + index + "]: ");
-            stringBuilder.append("(1)工作簿名称：" + excelCompareEntity.getSheetName());
+            stringBuilder.append("(1)工作簿名称：" + excelCompareItem.getSheetName());
             stringBuilder.append("、");
-            stringBuilder.append("(2)列名：" + excelCompareEntity.getCloumnName());
-            if (StringUtils.isNotBlank(excelCompareEntity.getLineNumber())) {
+            stringBuilder.append("(2)列名：" + excelCompareItem.getCloumnName());
+            if (StringUtils.isNotBlank(excelCompareItem.getLineNumber())) {
                 stringBuilder.append("、");
-                stringBuilder.append("(3)行号：" + excelCompareEntity.getLineNumber());
+                stringBuilder.append("(3)行号：" + excelCompareItem.getLineNumber());
             }
             stringBuilder.append("\n");
             index++;

@@ -1,6 +1,6 @@
 package pers.hdq.ui;
 
-import pers.hdq.model.ExcelCompareEntity;
+import pers.hdq.model.ExcelCompareItem;
 import pers.hdq.util.Contants;
 import pers.hdq.util.EasyExcelReadUtil;
 
@@ -174,21 +174,21 @@ public class UiTabbedPane {
      *
      * @return
      */
-    public static Set<ExcelCompareEntity> getExcelCompareEntityList() {
-        Set<ExcelCompareEntity> excelCompareEntityList = new HashSet<>();
+    public static Set<ExcelCompareItem> getExcelCompareItemList() {
+        Set<ExcelCompareItem> excelCompareItemList = new HashSet<>();
 
         for (CompareItemPanel compareItemPanel : compareItemPanels) {
             String sheetName = compareItemPanel.getSheetComboBox().getSelectedItem().toString();
             String columnName = compareItemPanel.getColumnComboBox().getSelectedItem().toString();
             String lineNumber = compareItemPanel.getFilterTextField().getText();
 
-            ExcelCompareEntity excelCompareEntity = ExcelCompareEntity.builder()
+            ExcelCompareItem excelCompareItem = ExcelCompareItem.builder()
                     .sheetName(sheetName).cloumnName(columnName).lineNumber(lineNumber).build();
 
-            excelCompareEntityList.add(excelCompareEntity);
+            excelCompareItemList.add(excelCompareItem);
         }
 
-        return excelCompareEntityList;
+        return excelCompareItemList;
 
     }
 

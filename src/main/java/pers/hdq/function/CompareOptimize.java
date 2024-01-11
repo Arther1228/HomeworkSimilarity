@@ -27,7 +27,6 @@ public class CompareOptimize {
      * @param ikFlag         是否打开智能分词，为false显示最小粒度分词结果
      * @param pictureSimFlag 是否计算文档中图片相似度，为是会增加准确率，但会极大增加运算时间
      * @param threshold      相似度阈值
-     *
      * @author HuDaoquan
      * @date 2022/6/15 14:50
      **/
@@ -70,17 +69,15 @@ public class CompareOptimize {
         }
         System.out.println("文档读取完成,开始计算相似度,共计" + allDocAbsolutePath.size() + "个文件,需计算" + sumCount + "次,当前时间:" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
 
+        int detailSize = sumCount > 100000 ? 1 : sumCount;
 
-        int detailSize = sumCount;
-        if (sumCount > 100000) {
-            detailSize = 1;
-        }
         // sheet1中详细所有数据
         List<SimilarityOutEntity> detailList = Collections.synchronizedList(new ArrayList<>(detailSize));
         // sheet2中简略结果数据
         List<SimilarityOutEntity> sortMaxResultList = Collections.synchronizedList(new ArrayList<>(allDocAbsolutePath.size()));
         // sheet3中超过相似度阈值名单
         List<PlagiarizeEntity> plagiarizeEntityList = Collections.synchronizedList(new ArrayList<>());
+
         //选择线程类型
         ExecutorService comThreadPool = ThreadPoolUtil.compareThreadPool;
         if (!multithreadingFlag) {
@@ -113,7 +110,7 @@ public class CompareOptimize {
             detailList.add(similarityOutEntity);
         }
 
-        String excelPath = path + "\\相似度比对结果".concat("智能分词-" + "相似度比对-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()).concat(".xlsx"));
+        String excelPath = path + "\\相似度比对结果-".concat("智能分词-" + "相似度比对-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()).concat(".xlsx"));
         // 排序并导出excel
         CommonFunction.sortAndImportExcel(excelPath, detailList, sortMaxResultList, plagiarizeEntityList);
     }
@@ -129,7 +126,6 @@ public class CompareOptimize {
      * @param sortMaxResultList
      * @param plagiarizeEntityList
      * @param i
-     *
      * @return {@link int}
      * @author HuDaoquan
      * @date 2022/6/18 19:44
@@ -153,9 +149,8 @@ public class CompareOptimize {
             detailList.addAll(docLeftAllSimList);
         }
         // 找出和文档1最相似的文档，先降序排序
-        docLeftAllSimList =
-                docLeftAllSimList.stream().sorted(Comparator.comparing(SimilarityOutEntity::getWeightedSimDouble,
-                        Comparator.reverseOrder())).collect(Collectors.toList());
+        docLeftAllSimList = docLeftAllSimList.stream().sorted(Comparator.comparing(SimilarityOutEntity::getWeightedSimDouble,
+                Comparator.reverseOrder())).collect(Collectors.toList());
         System.out.println(docLeft.getAbsolutePath() + " 与其后的" + docLeftAllSimList.size() + "个文档比较完成,最大相似度:" + docLeftAllSimList.get(0).getWeightedSim());
         /*  求出每个文档的最大值，如果最大值有多个，只保留10个*/
         int m = 0;
