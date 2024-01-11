@@ -45,7 +45,7 @@ public class SearchMouseAdapter extends MouseAdapter {
         JTextArea docLocationTextArea = uIhdq.getDocLocationTextArea();
 
         if (path == null || path.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "请先选择文件夹路径", "提示", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "请先选择比对路径", "提示", JOptionPane.WARNING_MESSAGE);
             return; // 不执行后续的操作
         }
 

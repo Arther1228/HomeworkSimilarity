@@ -83,7 +83,7 @@ public class CampareItemUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (uIhdq.getPath() == null || uIhdq.getPath().isEmpty()) {
-                    JOptionPane.showMessageDialog(panel, "请先选择文件夹路径", "提示", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(panel, "请先选择比对路径", "提示", JOptionPane.WARNING_MESSAGE);
                 } else {
                     addDynamicPanel(uIhdq);
                 }
