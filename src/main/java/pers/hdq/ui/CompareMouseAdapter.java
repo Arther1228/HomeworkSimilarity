@@ -1,6 +1,7 @@
 package pers.hdq.ui;
 
 import pers.hdq.function.CompareOptimize;
+import pers.hdq.function.CompareOptimize2;
 import pers.hdq.util.ThresholdUtil;
 
 import javax.swing.*;
@@ -72,7 +73,7 @@ public class CompareMouseAdapter extends MouseAdapter {
         try {
             switch ((String) queryModeBox.getSelectedItem()) {
                 case "模式2今年与往年":
-                    CompareOptimize.getSimilarityMode2(path, wordBox.isSelected(), picBox.isSelected(), simThre, excelPath, multithreadingFlag);
+                    CompareOptimize2.getSimilarityMode2(path, wordBox.isSelected(), picBox.isSelected(), simThre, excelPath, multithreadingFlag);
                     break;
                 default:
                     CompareOptimize.getSimilarityMode1(path, wordBox.isSelected(), picBox.isSelected(), simThre, excelPath, multithreadingFlag);
