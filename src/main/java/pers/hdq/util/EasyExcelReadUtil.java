@@ -74,6 +74,7 @@ public class EasyExcelReadUtil {
         List<ReadSheet> sheets = excelReader.excelExecutor().sheetList();
         Set<String> sheetNameSet = sheets.stream().map(ReadSheet::getSheetName).collect(Collectors.toSet());
 
+        excelReader.close();
         return sheetNameSet;
     }
 

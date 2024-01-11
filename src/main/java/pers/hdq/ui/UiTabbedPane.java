@@ -8,10 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author yangliangchuang 2024-01-09 16:20
@@ -176,8 +174,8 @@ public class UiTabbedPane {
      *
      * @return
      */
-    public static List<ExcelCompareEntity> getExcelCompareEntityList() {
-        List<ExcelCompareEntity> excelCompareEntityList = new ArrayList<>();
+    public static Set<ExcelCompareEntity> getExcelCompareEntityList() {
+        Set<ExcelCompareEntity> excelCompareEntityList = new HashSet<>();
 
         for (CompareItemPanel compareItemPanel : compareItemPanels) {
             String sheetName = compareItemPanel.getSheetComboBox().getSelectedItem().toString();

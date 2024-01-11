@@ -13,22 +13,6 @@ import java.awt.event.ItemListener;
  */
 public class Contants {
 
-    public enum CompareFileType {
-
-        EXCEL("Excel"),
-        WORD_TXT("Word/Txt");
-
-        private String name;
-
-        CompareFileType(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-    }
-
     public static Rectangle getFrameSize() {
         return new Rectangle(500, 100, 1000, 800);
     }

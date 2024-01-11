@@ -2,14 +2,14 @@ package pers.hdq.ui;
 
 import pers.hdq.function.CompareOptimize;
 import pers.hdq.model.ExcelCompareEntity;
-import pers.hdq.util.Contants;
+import pers.hdq.util.CompareFileType;
 import pers.hdq.util.ThresholdUtil;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author yangliangchuang 2024-01-10 11:06
@@ -62,13 +62,13 @@ public class CompareMouseAdapter extends MouseAdapter {
             String compareType = uIhdq.getCompareType();
             docLocationTextArea.append("当前选择的比较文件类型： " + compareType + "\n");
 
-            if(Contants.CompareFileType.EXCEL.getName().equals(compareType)){
+            if(CompareFileType.EXCEL.getName().equals(compareType)){
                 //Excel比较项
-                List<ExcelCompareEntity> excelCompareEntityList = UiTabbedPane.getExcelCompareEntityList();
+                Set<ExcelCompareEntity> excelCompareEntityList = UiTabbedPane.getExcelCompareEntityList();
                 //打印比较项
                 docLocationTextArea.append(ExcelCompareEntity.toString(excelCompareEntityList));
 
-            }else if(Contants.CompareFileType.WORD_TXT.equals(compareType)){
+            }else if(CompareFileType.WORD_TXT.getName().equals(compareType)){
                 CompareOptimize.getSimilarityMode1(path, wordBox.isSelected(), false, simThre, multithreadingFlag);
             }
 

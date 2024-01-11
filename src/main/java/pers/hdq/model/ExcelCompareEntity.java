@@ -4,7 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author yangliangchuang 2024-01-10 16:30
@@ -20,8 +21,22 @@ public class ExcelCompareEntity {
 
     private String lineNumber;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ExcelCompareEntity that = (ExcelCompareEntity) o;
+        return Objects.equals(sheetName, that.sheetName) &&
+                Objects.equals(cloumnName, that.cloumnName) &&
+                Objects.equals(lineNumber, that.lineNumber);
+    }
 
-    public static String toString(List<ExcelCompareEntity> excelCompareEntityList) {
+    @Override
+    public int hashCode() {
+        return Objects.hash(sheetName, cloumnName, lineNumber);
+    }
+
+    public static String toString(Set<ExcelCompareEntity> excelCompareEntityList) {
         StringBuilder stringBuilder = new StringBuilder();
         int index = 1;
         for (ExcelCompareEntity excelCompareEntity : excelCompareEntityList) {
