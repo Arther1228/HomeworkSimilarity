@@ -18,7 +18,7 @@ public class HutoolExcelUtil {
 
         List<String> excelFilePaths = FileUtil.loopFiles(folderPath, file -> {
             String fileName = file.getName().toLowerCase();
-            return fileName.endsWith(".xls") || fileName.endsWith(".xlsx");
+            return (fileName.endsWith(".xls") || fileName.endsWith(".xlsx")) && !fileName.startsWith("~$");
         }).stream()
                 .map(File::getAbsolutePath)
                 .collect(Collectors.toList());

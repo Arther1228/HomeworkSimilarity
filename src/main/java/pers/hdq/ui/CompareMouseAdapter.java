@@ -9,7 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author yangliangchuang 2024-01-10 11:06
@@ -64,9 +65,9 @@ public class CompareMouseAdapter extends MouseAdapter {
 
             if(CompareFileType.EXCEL.getName().equals(compareType)){
                 //Excel比较项
-                Set<ExcelCompareItem> excelCompareItemList = UiTabbedPane.getExcelCompareItemList();
+                Map<ExcelCompareItem, List<String>> excelCompareItemAndExcelList = UiTabbedPane.getExcelCompareItemAndExcelList();
                 //打印比较项
-                docLocationTextArea.append(ExcelCompareItem.toString(excelCompareItemList));
+                docLocationTextArea.append(ExcelCompareItem.toString(excelCompareItemAndExcelList));
 
             }else if(CompareFileType.WORD_TXT.getName().equals(compareType)){
                 CompareOptimize.getSimilarityMode1(path, wordBox.isSelected(), false, simThre, multithreadingFlag);

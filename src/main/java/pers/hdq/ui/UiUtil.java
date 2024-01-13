@@ -110,7 +110,10 @@ public class UiUtil {
                         String tempPath = file.getPath();
                         textPath.setText(tempPath);
                         uIhdq.setPath(tempPath);
-                        UiTabbedPane.initExcelContent(tempPath);
+                        boolean success = UiTabbedPane.initExcelContent(tempPath);
+                        if(success){
+                            uIhdq.getAddButton().setEnabled(true);
+                        }
                     }
                 }
             }

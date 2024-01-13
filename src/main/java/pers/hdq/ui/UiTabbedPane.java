@@ -32,14 +32,24 @@ public class UiTabbedPane {
     /**
      * 文件全名：全有列
      */
-    private static Map<String, List<String>> allFileNameWithColumns = new HashMap<>();
+    private static Map<String, List<String>> allColumnNamesByFileNameAndSheet = new HashMap<>();
+
+
+    /**
+     * 键为"sheet名-列名"，值为存在文件列表
+     */
+    private static Map<String, List<String>> allSheetAndColumnNamesWithFiles = new HashMap<>();
 
     public static Map<String, List<String>> getAllExcelSheetListWithFileNames() {
         return allExcelSheetListWithFileNames;
     }
 
     public static Map<String, List<String>> getAllFileNameWithColumns() {
-        return allFileNameWithColumns;
+        return allColumnNamesByFileNameAndSheet;
+    }
+
+    public static Map<String, List<String>> getAllSheetAndColumnNamesWithFiles() {
+        return allSheetAndColumnNamesWithFiles;
     }
 
     /**
@@ -73,8 +83,9 @@ public class UiTabbedPane {
                 "\n  2.相似度比对结果存储于所选文件夹中以“相似度比对结果”开头的Excel表格中；" +
                 "\n  3.“简略结果”表列出每个文件及其最相似文件，详细结果表列出全部结果；超过相似度阈值名单会列出相似度超过在选定阈值的文件名。" +
                 "\n  4.Word/Txt文件：目前只支持整个文件两两比较，不支持选择文本段落。" +
-                "\n  5.Excel文件：可以设置“比较项”，即Excel文件的工作簿（sheet）、列、行。每次添加一个“比较项”，将两两比较所选文件夹中的Excel文件" +
-                "中该“比较项”的文本。如果“比较项”中只有一个Excel文件中有，则不会进行比较。");
+                "\n  5.Excel文件：可以设置“比较项”，即Excel文件的工作簿（sheet）、列、行。每次添加一个“比较项”，将两两比较所选文件夹中的Excel文件中该“比较项”的文本。" +
+                "\n  6.Excel文件比较注意：（1）如果“比较项”只有一个Excel文件中有，则不会进行比较。"+
+                "\n  7.Excel文件比较注意：（2）如果在同一个Excel中存在同名工作簿、同名列，比较结果可能不准确，请尽量避免。");
         txtpnrnrncsvexcelrn.setToolTipText("使用说明");
         txtpnrnrncsvexcelrn.setBounds(Contants.getTxtpnrnrncsvexcelrnSize());
 
@@ -164,9 +175,15 @@ public class UiTabbedPane {
      *
      * @param path
      */
-    public static void initExcelContent(String path) {
-        allExcelSheetListWithFileNames = EasyExcelReadUtil.getAllExcelSheetListWithFileNames(path);
-        allFileNameWithColumns = EasyExcelReadUtil.getAllExcelColumnNames(path);
+    public static boolean initExcelContent(String path) {
+
+        EasyExcelReadUtil easyExcelReadUtil = new EasyExcelReadUtil(path);
+
+        allExcelSheetListWithFileNames = easyExcelReadUtil.getAllExcelSheetListWithFileNames();
+        allColumnNamesByFileNameAndSheet = easyExcelReadUtil.getAllColumnNamesByFileNameAndSheet();
+        allSheetAndColumnNamesWithFiles = easyExcelReadUtil.getAllSheetAndColumnNamesWithFiles();
+
+        return true;
     }
 
     /**
@@ -190,6 +207,31 @@ public class UiTabbedPane {
 
         return excelCompareItemList;
 
+    }
+
+
+    /**
+     * 根据比较项的 sheet + column 找到对应的excel路径
+     *
+     * @return
+     */
+    public static Map<ExcelCompareItem, List<String>> getExcelCompareItemAndExcelList() {
+        Map<ExcelCompareItem, List<String>> excelCompareItemStringMap = new HashMap<>();
+
+        for (CompareItemPanel compareItemPanel : compareItemPanels) {
+            String sheetName = compareItemPanel.getSheetComboBox().getSelectedItem().toString();
+            String columnName = compareItemPanel.getColumnComboBox().getSelectedItem().toString();
+            String lineNumber = compareItemPanel.getFilterTextField().getText();
+
+            String key = sheetName + "-" + columnName;
+            List<String> filePathList = allSheetAndColumnNamesWithFiles.get(key);
+
+            ExcelCompareItem excelCompareItem = ExcelCompareItem.builder()
+                    .sheetName(sheetName).cloumnName(columnName).lineNumber(lineNumber).build();
+
+            excelCompareItemStringMap.put(excelCompareItem, filePathList);
+        }
+        return excelCompareItemStringMap;
     }
 
 }

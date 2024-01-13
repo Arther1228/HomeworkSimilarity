@@ -21,16 +21,17 @@ public class EasyExcelReadUtilTest {
     @Test
     public void getAllExcelSheetList(){
 
-        Map<String, List<String>> allExcelSheetListWithFileNames = EasyExcelReadUtil.getAllExcelSheetListWithFileNames(path);
+        EasyExcelReadUtil easyExcelReadUtil = new EasyExcelReadUtil(path);
+        Map<String, List<String>> allExcelSheetListWithFileNames = easyExcelReadUtil.getAllExcelSheetListWithFileNames();
         System.out.println(allExcelSheetListWithFileNames);
     }
 
 
     @Test
     public void getAllExcelColumnNames(){
-
-        Map<String, List<String>> allExcelSheetListWithFileNames = EasyExcelReadUtil.getAllExcelColumnNames(path);
-        System.out.println(allExcelSheetListWithFileNames);
+        EasyExcelReadUtil easyExcelReadUtil = new EasyExcelReadUtil(path);
+        Map<String, List<String>> allColumnNamesByFileNameAndSheet = easyExcelReadUtil.getAllColumnNamesByFileNameAndSheet();
+        System.out.println(allColumnNamesByFileNameAndSheet);
     }
 
     @Test
@@ -56,20 +57,13 @@ public class EasyExcelReadUtilTest {
         String sheetName = "段落";
         String columnName = "段落内容";
         Integer rowIndex = -1;
+        Integer rowIndex2 = 19;
 
         StringBuffer contentByDetailIndex = EasyExcelReadUtil.getContentByDetailIndex(filePath, sheetName, rowIndex, columnName);
+        StringBuffer contentByDetailIndex2 = EasyExcelReadUtil.getContentByDetailIndex(filePath, sheetName, rowIndex2, columnName);
         System.out.println(contentByDetailIndex);
+        System.out.println(contentByDetailIndex2);
 
     }
 
-    @Test
-    public void getContentByDetailIndex() {
-
-        String sheetName = "题录加工";
-        String columnName = "字段值";
-        Integer rowIndex = 19;
-
-        StringBuffer contentByDetailIndex = EasyExcelReadUtil.getContentByDetailIndex(filePath, sheetName, rowIndex, columnName);
-        System.out.println(contentByDetailIndex);
-    }
 }
