@@ -117,15 +117,15 @@ public class EasyExcelReadUtil {
 
 
     /**
-     * 查询指定sheet，列名列表
+     * 查询指定文件和sheet的所有列名
      *
-     * @param path
+     * @param filePath
      */
-    public static Set<String> getColumnNameListBySheet(String path, String sheetName) {
+    public static Set<String> getColumnNameListBySheet(String filePath, String sheetName) {
         Set<String> headNameSet = new HashSet<>();
         try {
             ExcelDataListener excelDataListener = new ExcelDataListener();
-            EasyExcel.read(path, excelDataListener).sheet(sheetName).doRead();
+            EasyExcel.read(filePath, excelDataListener).sheet(sheetName).doRead();
             headNameSet = excelDataListener.getHeadNameSet();
         } catch (Exception e) {
             System.err.println("查询指定sheet，列名列表报错，原因：" + e.getMessage());
@@ -138,43 +138,53 @@ public class EasyExcelReadUtil {
     /**
      * 查询指定sheet、列名、行号的内容
      *
-     * @param path
+     * @param filePath
      */
-    public static StringBuffer getContentByDetailIndex(String path, String sheetName, Integer rowIndex, String columnName) {
+    public static String getContentByDetailIndex(String filePath, String sheetName, String columnName, String lineNumber) {
         StringBuffer content = new StringBuffer();
 
-        ExcelDataListener excelDataListener = new ExcelDataListener();
-        EasyExcel.read(path, excelDataListener).sheet(sheetName).doRead();
+        try {
+            ExcelDataListener excelDataListener = new ExcelDataListener();
+            EasyExcel.read(filePath, excelDataListener).sheet(sheetName).doRead();
 
-        //获取列 index
-        Map<Integer, String> headMap = excelDataListener.getHeadMap();
-        int columnIndex = -1;
-        // 遍历
-        for (Map.Entry<Integer, String> entry : headMap.entrySet()) {
-            if (entry.getValue().equals(columnName)) {
-                columnIndex = entry.getKey();
-                break;
-            }
-        }
+            //获取列 index
+            Map<Integer, String> headMap = excelDataListener.getHeadMap();
 
-        //是否过滤行
-        Map<Integer, Map<Integer, String>> excelContentMap = excelDataListener.getRowContentMap();
-        if (rowIndex != -1) {
-            Map<Integer, String> rowContentMap = excelContentMap.get(rowIndex);
-            String columnContent = rowContentMap.get(columnIndex);
-            if (StringUtils.isNotBlank(columnContent)) {
-                content.append(columnContent + " ");
+            if (headMap == null) {
+                System.err.println("当前文件: " + filePath + " 不存在指定列：" + sheetName);
+                return content.toString();
             }
-        } else {
-            for (Map<Integer, String> rowConent : excelContentMap.values()) {
-                String columnContent = rowConent.get(columnIndex);
+
+            int columnIndex = -1;
+            // 遍历
+            for (Map.Entry<Integer, String> entry : headMap.entrySet()) {
+                if (entry.getValue().equals(columnName)) {
+                    columnIndex = entry.getKey();
+                    break;
+                }
+            }
+
+            //是否过滤行
+            Map<Integer, Map<Integer, String>> excelContentMap = excelDataListener.getRowContentMap();
+            if (StringUtils.isNotBlank(lineNumber) && !"-1".equals(lineNumber)) {
+                Map<Integer, String> rowContentMap = excelContentMap.get(Integer.valueOf(lineNumber));
+                String columnContent = rowContentMap.get(columnIndex);
                 if (StringUtils.isNotBlank(columnContent)) {
                     content.append(columnContent + " ");
                 }
+            } else {
+                for (Map<Integer, String> rowConent : excelContentMap.values()) {
+                    String columnContent = rowConent.get(columnIndex);
+                    if (StringUtils.isNotBlank(columnContent)) {
+                        content.append(columnContent + " ");
+                    }
+                }
             }
+        } catch (Exception e) {
+            System.err.println("读文件: " + filePath + " 内容发生错误，原因：" + e.getMessage());
         }
 
-        return content;
+        return content.toString();
     }
 
 }

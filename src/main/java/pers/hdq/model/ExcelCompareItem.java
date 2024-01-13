@@ -20,7 +20,7 @@ public class ExcelCompareItem {
 
     private String sheetName;
 
-    private String cloumnName;
+    private String columnName;
 
     private String lineNumber;
 
@@ -34,13 +34,22 @@ public class ExcelCompareItem {
         }
         ExcelCompareItem that = (ExcelCompareItem) o;
         return Objects.equals(sheetName, that.sheetName) &&
-                Objects.equals(cloumnName, that.cloumnName) &&
+                Objects.equals(columnName, that.columnName) &&
                 Objects.equals(lineNumber, that.lineNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sheetName, cloumnName, lineNumber);
+        return Objects.hash(sheetName, columnName, lineNumber);
+    }
+
+    @Override
+    public String toString() {
+        if (lineNumber != null) {
+            return sheetName + '-' + columnName + '-' + lineNumber;
+        } else {
+            return sheetName + '-' + columnName;
+        }
     }
 
     public static String toString(Map<ExcelCompareItem, List<String>> excelCompareItemMap) {
@@ -54,7 +63,7 @@ public class ExcelCompareItem {
             stringBuilder.append("[比较项" + index + "]: ");
             stringBuilder.append("(1)工作簿名称：" + excelCompareItem.getSheetName());
             stringBuilder.append("、");
-            stringBuilder.append("(2)列名：" + excelCompareItem.getCloumnName());
+            stringBuilder.append("(2)列名：" + excelCompareItem.getColumnName());
             if (StringUtils.isBlank(excelCompareItem.getLineNumber())) {
                 stringBuilder.append("、");
                 stringBuilder.append("(3)行号：未设置，比较全列文本");

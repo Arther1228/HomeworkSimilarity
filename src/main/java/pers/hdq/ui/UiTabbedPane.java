@@ -200,7 +200,7 @@ public class UiTabbedPane {
             String lineNumber = compareItemPanel.getFilterTextField().getText();
 
             ExcelCompareItem excelCompareItem = ExcelCompareItem.builder()
-                    .sheetName(sheetName).cloumnName(columnName).lineNumber(lineNumber).build();
+                    .sheetName(sheetName).columnName(columnName).lineNumber(lineNumber).build();
 
             excelCompareItemList.add(excelCompareItem);
         }
@@ -227,7 +227,7 @@ public class UiTabbedPane {
             List<String> filePathList = allSheetAndColumnNamesWithFiles.get(key);
 
             ExcelCompareItem excelCompareItem = ExcelCompareItem.builder()
-                    .sheetName(sheetName).cloumnName(columnName).lineNumber(lineNumber).build();
+                    .sheetName(sheetName).columnName(columnName).lineNumber(lineNumber).build();
 
             excelCompareItemStringMap.put(excelCompareItem, filePathList);
         }

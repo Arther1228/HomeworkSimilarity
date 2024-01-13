@@ -15,7 +15,7 @@ public class EasyExcelReadUtilTest {
 
     private String path = "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123";
 
-    private String filePath = "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\GBT37735——2019.xlsx";
+    private String filePath = "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\相似度比对结果-智能分词-相似度比对-20240113085224.xlsx";
 
 
     @Test
@@ -56,12 +56,17 @@ public class EasyExcelReadUtilTest {
 
         String sheetName = "段落";
         String columnName = "段落内容";
-        Integer rowIndex = -1;
-        Integer rowIndex2 = 19;
+        String rowIndex = "-1";
 
-        StringBuffer contentByDetailIndex = EasyExcelReadUtil.getContentByDetailIndex(filePath, sheetName, rowIndex, columnName);
-        StringBuffer contentByDetailIndex2 = EasyExcelReadUtil.getContentByDetailIndex(filePath, sheetName, rowIndex2, columnName);
+        String contentByDetailIndex = EasyExcelReadUtil.getContentByDetailIndex(filePath, sheetName, columnName, rowIndex);
         System.out.println(contentByDetailIndex);
+
+
+        String sheetName2 = "题录加工";
+        String columnName2 = "字段值";
+        String rowIndex2 = "19";
+
+        String contentByDetailIndex2 = EasyExcelReadUtil.getContentByDetailIndex(filePath, sheetName2, columnName2, rowIndex2);
         System.out.println(contentByDetailIndex2);
 
     }

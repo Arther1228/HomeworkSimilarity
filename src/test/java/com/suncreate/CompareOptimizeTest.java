@@ -26,12 +26,12 @@ public class CompareOptimizeTest {
     @Before
     public void init() {
 
-        ExcelCompareItem item1 = ExcelCompareItem.builder().sheetName("段落").cloumnName("段落内容").build();
-        ExcelCompareItem item2 = ExcelCompareItem.builder().sheetName("题录加工").cloumnName("字段值").lineNumber("3").build();
-        ExcelCompareItem item3 = ExcelCompareItem.builder().sheetName("题录加工").cloumnName("字段值").lineNumber("9").build();
+        ExcelCompareItem item1 = ExcelCompareItem.builder().sheetName("段落").columnName("段落内容").build();
+        ExcelCompareItem item2 = ExcelCompareItem.builder().sheetName("题录加工").columnName("字段值").lineNumber("3").build();
+        ExcelCompareItem item3 = ExcelCompareItem.builder().sheetName("题录加工").columnName("字段值").lineNumber("9").build();
 
         List<String> fileList1 = Arrays.asList("C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\GBT37735——2019 - 副本.xlsx", "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\GBT37735——2019.xlsx");
-        List<String> fileList2 = Arrays.asList("C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\GBT37735——2019 - 副本.xlsx", "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\GBT37735——2019.xlsx","相似度比对结果-智能分词-相似度比对-20240113085224.xlsx");
+        List<String> fileList2 = Arrays.asList("C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\GBT37735——2019 - 副本.xlsx", "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\GBT37735——2019.xlsx","C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\相似度比对结果-智能分词-相似度比对-20240113085224.xlsx");
 
         excelCompareItemAndExcelList.put(item1, fileList1);
         excelCompareItemAndExcelList.put(item2, fileList1);
@@ -69,11 +69,12 @@ public class CompareOptimizeTest {
     }
 
     @Test
-    public void getExcelFileSimilarity() throws Exception {
+    public void getExcelFileSimilarity() {
         /*  获取开始时间*/
         long startTime = System.currentTimeMillis();
 
-        ExcelCompareOptimize.getExcelFileSimilarity(excelCompareItemAndExcelList, true, 0.9, true);
+        ExcelCompareOptimize excelCompareOptimize = new ExcelCompareOptimize(true, true,0.9);
+        excelCompareOptimize.getExcelFileSimilarity(path, excelCompareItemAndExcelList);
 
         /*  获取结束时间*/
         long endTime = System.currentTimeMillis();
