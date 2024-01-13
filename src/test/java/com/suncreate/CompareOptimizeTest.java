@@ -30,8 +30,8 @@ public class CompareOptimizeTest {
         ExcelCompareItem item2 = ExcelCompareItem.builder().sheetName("题录加工").columnName("字段值").lineNumber("3").build();
         ExcelCompareItem item3 = ExcelCompareItem.builder().sheetName("题录加工").columnName("字段值").lineNumber("9").build();
 
-        List<String> fileList1 = Arrays.asList("C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\GBT37735——2019 - 副本.xlsx", "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\GBT37735——2019.xlsx");
-        List<String> fileList2 = Arrays.asList("C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\GBT37735——2019 - 副本.xlsx", "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\GBT37735——2019.xlsx","C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\相似度比对结果-智能分词-相似度比对-20240113085224.xlsx");
+        List<String> fileList1 = Arrays.asList("C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\GBT37735——2019 - 1.xlsx", "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\GBT37735——2019 - 2.xlsx");
+        List<String> fileList2 = Arrays.asList("C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\GBT37735——2019.xlsx", "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\GBT37735——2019 - 1.xlsx", "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\GBT37735——2019 - 2.xlsx");
 
         excelCompareItemAndExcelList.put(item1, fileList1);
         excelCompareItemAndExcelList.put(item2, fileList1);

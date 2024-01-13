@@ -138,6 +138,8 @@ public class ExcelCompareOptimize {
         for (Map.Entry<ExcelCompareItem, List<String>> excelCompareItemEntry : excelCompareItemAndExcelList.entrySet()) {
             ExcelCompareItem excelCompareItem = excelCompareItemEntry.getKey();
             List<String> allExcelAbsolutePath = excelCompareItemEntry.getValue();
+            System.out.println("=======================开始对指标项： 【" + excelCompareItem + "】 进行比较：=======================");
+
             //总计算次数
             sumCount += (allExcelAbsolutePath.size() - 1) * allExcelAbsolutePath.size() / 2;
 
@@ -165,6 +167,8 @@ public class ExcelCompareOptimize {
             } catch (InterruptedException e) {
                 System.out.println("阻塞子线程中断异常:" + e);
             }
+
+            System.out.println("=======================完成对指标项： 【" + excelCompareItem + "】 比较。=======================");
         }
 
         if (detailList.size() >= 100000) {
@@ -245,15 +249,13 @@ public class ExcelCompareOptimize {
         double textSim = (conSim + jaccardSim) / 2;
         // 判断结果
         String judgeResult = "";
-        /*  存图片相似度*/
-        double avgPicSim = 0D;
         /*  存最终加权相似度*/
         double weightedSim;
 
         /*  将文本相似度结果平方，，调整相似度*/
-        weightedSim = (Math.pow(textSim, 1.5) + avgPicSim);
+        weightedSim = textSim;
 
-        if (weightedSim > threshold || jaccardSim > 0.90 || conSim > 0.90 || avgPicSim > 0.90) {
+        if (weightedSim > threshold || jaccardSim > 0.90 || conSim > 0.90) {
             judgeResult = "疑似超过相似度阈值";
             //超过相似度阈值名单
             plagiarizeEntityList.add(PlagiarizeEntity.builder().docName(docLeft.getAbsolutePath()).build());
@@ -264,7 +266,6 @@ public class ExcelCompareOptimize {
                 .excelCompareItemStr(docLeft.getExcelCompareItem().toString())
                 .judgeResult(judgeResult)
                 .conSim(numFormat.format(conSim))
-                .avgPicSim(numFormat.format(avgPicSim))
                 .jaccardSim(numFormat.format(jaccardSim))
                 .leftDocName(docLeft.getAbsolutePath())
                 .weightedSim(numFormat.format(weightedSim))

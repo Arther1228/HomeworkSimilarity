@@ -1,6 +1,7 @@
 package pers.hdq.ui;
 
 import pers.hdq.function.CompareOptimize;
+import pers.hdq.function.ExcelCompareOptimize;
 import pers.hdq.model.ExcelCompareItem;
 import pers.hdq.util.CompareFileType;
 import pers.hdq.util.ThresholdUtil;
@@ -16,8 +17,6 @@ import java.util.Map;
  * @author yangliangchuang 2024-01-10 11:06
  */
 public class CompareMouseAdapter extends MouseAdapter {
-
-    private int index = 1;
 
     private UIhdq uIhdq;
 
@@ -46,12 +45,8 @@ public class CompareMouseAdapter extends MouseAdapter {
 
         docLocationTextArea.setText("开始处理：\n");
         docLocationTextArea.paintImmediately(docLocationTextArea.getBounds());
-        if (index % 2 == 0) {
-            docLocationTextArea.setForeground(Color.BLACK);
-        } else {
-            docLocationTextArea.setForeground(Color.magenta);
-        }
-        index++;
+        docLocationTextArea.setForeground(Color.BLACK);
+
 
         try {
             long startTime = System.currentTimeMillis();
@@ -63,13 +58,17 @@ public class CompareMouseAdapter extends MouseAdapter {
             String compareType = uIhdq.getCompareType();
             docLocationTextArea.append("当前选择的比较文件类型： " + compareType + "\n");
 
-            if(CompareFileType.EXCEL.getName().equals(compareType)){
+            if (CompareFileType.EXCEL.getName().equals(compareType)) {
                 //Excel比较项
                 Map<ExcelCompareItem, List<String>> excelCompareItemAndExcelList = UiTabbedPane.getExcelCompareItemAndExcelList();
                 //打印比较项
                 docLocationTextArea.append(ExcelCompareItem.toString(excelCompareItemAndExcelList));
 
-            }else if(CompareFileType.WORD_TXT.getName().equals(compareType)){
+                //比较
+                ExcelCompareOptimize excelCompareOptimize = new ExcelCompareOptimize(wordBox.isSelected(), multithreadingFlag, simThre);
+                excelCompareOptimize.getExcelFileSimilarity(path, excelCompareItemAndExcelList);
+
+            } else if (CompareFileType.WORD_TXT.getName().equals(compareType)) {
                 CompareOptimize.getSimilarityMode1(path, wordBox.isSelected(), false, simThre, multithreadingFlag);
             }
 

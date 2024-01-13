@@ -45,7 +45,7 @@ public class ExcelCompareItem {
 
     @Override
     public String toString() {
-        if (lineNumber != null) {
+        if (StringUtils.isNotBlank(lineNumber) && lineNumber != null) {
             return sheetName + '-' + columnName + '-' + lineNumber;
         } else {
             return sheetName + '-' + columnName;

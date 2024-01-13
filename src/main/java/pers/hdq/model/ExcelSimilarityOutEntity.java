@@ -64,18 +64,12 @@ public class ExcelSimilarityOutEntity {
     @ColumnWidth(10)
     @ExcelProperty(value = "余弦相似度", index = 5)
     private String conSim;
-    /**
-     * 图片相似度
-     **/
-    @ColumnWidth(10)
-    @ExcelProperty(value = "图片相似度", index = 6)
-    private String avgPicSim;
 
     /**
      * 加权相似度
      **/
     @ColumnWidth(10)
-    @ExcelProperty(value = "加权相似度", index = 7)
+    @ExcelProperty(value = "加权相似度", index = 6)
     private String weightedSim;
 
     /**
