@@ -18,6 +18,8 @@ import java.util.Map;
  */
 public class CompareMouseAdapter extends MouseAdapter {
 
+    private int index = 1;
+
     private UIhdq uIhdq;
 
     private JCheckBox wordBox;
@@ -47,6 +49,12 @@ public class CompareMouseAdapter extends MouseAdapter {
         docLocationTextArea.paintImmediately(docLocationTextArea.getBounds());
         docLocationTextArea.setForeground(Color.BLACK);
 
+        if (index % 2 == 0) {
+            docLocationTextArea.setForeground(Color.BLACK);
+        } else {
+            docLocationTextArea.setForeground(Color.magenta);
+        }
+        index++;
 
         try {
             long startTime = System.currentTimeMillis();

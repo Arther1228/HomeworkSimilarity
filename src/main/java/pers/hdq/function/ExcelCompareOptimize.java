@@ -138,7 +138,7 @@ public class ExcelCompareOptimize {
         for (Map.Entry<ExcelCompareItem, List<String>> excelCompareItemEntry : excelCompareItemAndExcelList.entrySet()) {
             ExcelCompareItem excelCompareItem = excelCompareItemEntry.getKey();
             List<String> allExcelAbsolutePath = excelCompareItemEntry.getValue();
-            System.out.println("=======================开始对指标项： 【" + excelCompareItem + "】 进行比较：=======================");
+            System.out.println("=======================开始对指标项：【" + excelCompareItem + "】进行比较：=======================");
 
             //总计算次数
             sumCount += (allExcelAbsolutePath.size() - 1) * allExcelAbsolutePath.size() / 2;
