@@ -110,7 +110,8 @@ public class EasyExcelReadUtil {
         } catch (InvalidOperationException e) {
             System.err.println("有一个文件，因为正在打开，无法访问：" + filePath);
         } catch (Exception e) {
-            System.err.println("查询所有的sheet列表报错，原因：" + e.getMessage());
+            System.err.println("查询所有的sheet列表报错，filePath: "  + filePath + "，原因：" + e.getMessage());
+            e.printStackTrace();
         }
         return sheetNameSet;
     }

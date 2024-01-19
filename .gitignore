@@ -21,6 +21,8 @@ kk_kafka_filter.log
 *.iws
 *.iml
 *.ipr
+MANIFEST.MF
+out/
 
 ### NetBeans ###
 /nbproject/private/
@@ -32,3 +34,5 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
