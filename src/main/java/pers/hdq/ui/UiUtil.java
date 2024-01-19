@@ -88,11 +88,6 @@ public class UiUtil {
 
         compareJPanel.add(textPath);
 
-        //方便测试
-        textPath.setText("C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123");
-        uIhdq.setPath("C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123");
-        UiTabbedPane.initExcelContent("C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123");
-
         // ---- searchButton ----
         JButton searchButton = new JButton();
         searchButton.setText("选择比对路径");
