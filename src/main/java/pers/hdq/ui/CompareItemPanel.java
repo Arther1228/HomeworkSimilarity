@@ -68,7 +68,12 @@ public class CompareItemPanel extends JPanel {
         filterCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                filterTextField.setEnabled(filterCheckBox.isSelected());
+                boolean isSelected = filterCheckBox.isSelected();
+                filterTextField.setEnabled(isSelected);
+
+                if (!isSelected) {
+                    filterTextField.setText("");
+                }
             }
         });
 

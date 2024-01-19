@@ -289,9 +289,16 @@ public class ExcelCompareOptimize {
     public static void sortAndImportExcel(String excelPath, List<ExcelSimilarityOutEntity> detailList, List<ExcelSimilarityOutEntity> sortMaxResultList, List<PlagiarizeEntity> plagiarizeEntityList) {
 
         // 排序详细结果
-        detailList = detailList.stream().sorted(Comparator.comparing(ExcelSimilarityOutEntity::getWeightedSimDouble, Comparator.reverseOrder())).collect(Collectors.toList());
+        detailList = detailList.stream()
+                .sorted(Comparator.comparing(ExcelSimilarityOutEntity::getExcelCompareItemStr)
+                        .thenComparing(ExcelSimilarityOutEntity::getWeightedSimDouble, Comparator.reverseOrder()))
+                .collect(Collectors.toList());
+
         // 排序简略结果
-        sortMaxResultList = sortMaxResultList.stream().sorted(Comparator.comparing(ExcelSimilarityOutEntity::getWeightedSimDouble, Comparator.reverseOrder())).collect(Collectors.toList());
+        sortMaxResultList = sortMaxResultList.stream()
+                .sorted(Comparator.comparing(ExcelSimilarityOutEntity::getExcelCompareItemStr)
+                        .thenComparing(ExcelSimilarityOutEntity::getWeightedSimDouble, Comparator.reverseOrder()))
+                .collect(Collectors.toList());
         // 去重超过相似度阈值名单
         plagiarizeEntityList = plagiarizeEntityList.stream().collect(
                 Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(PlagiarizeEntity::getDocName))), ArrayList::new));
