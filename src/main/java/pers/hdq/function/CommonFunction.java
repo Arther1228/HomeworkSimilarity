@@ -151,7 +151,7 @@ public class CommonFunction {
             // 不计算图片相似度
             textSim = (conSim + jaccardSim) / 2;
             /*  将文本相似度结果平方，，调整相似度*/
-            weightedSim = (Math.pow(textSim, 1.5) + avgPicSim);
+            weightedSim = textSim;
         }
 
         if (weightedSim > threshold || jaccardSim > 0.90 || conSim > 0.90 || avgPicSim > 0.90) {
