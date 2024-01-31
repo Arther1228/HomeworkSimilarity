@@ -52,24 +52,10 @@ public class ExcelSimilarityOutEntity {
     private String rightDocName;
 
     /**
-     * jaccard相似度
-     **/
-    @ColumnWidth(10)
-    @ExcelProperty(value = "jaccard相似度", index = 4)
-    private String jaccardSim;
-
-    /**
-     * 余弦相似度
-     **/
-    @ColumnWidth(10)
-    @ExcelProperty(value = "余弦相似度", index = 5)
-    private String conSim;
-
-    /**
      * 加权相似度
      **/
     @ColumnWidth(10)
-    @ExcelProperty(value = "加权相似度", index = 6)
+    @ExcelProperty(value = "加权相似度", index = 4)
     private String weightedSim;
 
     /**

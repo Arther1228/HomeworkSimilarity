@@ -146,14 +146,19 @@ public class ExcelCompareOptimize {
             //解析excel 比较项内容
             List<ExcelFileEntity> allExcelEntityList = readExcelCompareContent(excelCompareItem, allExcelAbsolutePath);
 
+            //对所有excel 比较项内容，按照名称开始排序，方便调试
+            List<ExcelFileEntity> sortedAllExcelEntityList = allExcelEntityList.stream().sorted(Comparator.comparing(
+                    ExcelFileEntity::getFileName,
+                    Comparator.comparingLong(CommonFunction::extractNumber))).collect(Collectors.toList());
+
             CountDownLatch compareCdl = new CountDownLatch(allExcelAbsolutePath.size() - 1);
             // 遍所有文档信息冒泡原理两两比较文档相似度
-            for (int i = 0; i < allExcelEntityList.size() - 1; i++) {
+            for (int i = 0; i < sortedAllExcelEntityList.size() - 1; i++) {
                 int finalI = i;
                 Runnable run = new Runnable() {
                     @Override
                     public void run() {
-                        getFinishExcelCountModel(allExcelEntityList, detailList, sortMaxResultList, plagiarizeEntityList, finalI);
+                        getFinishExcelCountModel(sortedAllExcelEntityList, detailList, sortMaxResultList, plagiarizeEntityList, finalI);
                         //计数器递减
                         compareCdl.countDown();
                     }
@@ -265,8 +270,6 @@ public class ExcelCompareOptimize {
         return ExcelSimilarityOutEntity.builder()
                 .excelCompareItemStr(docLeft.getExcelCompareItem().toString())
                 .judgeResult(judgeResult)
-                .conSim(numFormat.format(conSim))
-                .jaccardSim(numFormat.format(jaccardSim))
                 .leftDocName(docLeft.getAbsolutePath())
                 .weightedSim(numFormat.format(weightedSim))
                 .rightDocName(docRight.getAbsolutePath())
@@ -289,20 +292,25 @@ public class ExcelCompareOptimize {
     public static void sortAndImportExcel(String excelPath, List<ExcelSimilarityOutEntity> detailList, List<ExcelSimilarityOutEntity> sortMaxResultList, List<PlagiarizeEntity> plagiarizeEntityList) {
 
         // 排序详细结果
-        detailList = detailList.stream()
-                .sorted(Comparator.comparing(ExcelSimilarityOutEntity::getExcelCompareItemStr)
-                        .thenComparing(ExcelSimilarityOutEntity::getWeightedSimDouble, Comparator.reverseOrder()))
+        detailList = detailList.stream().sorted(
+                        Comparator.comparing(ExcelSimilarityOutEntity::getExcelCompareItemStr)
+                        .thenComparing(ExcelSimilarityOutEntity::getLeftDocName, Comparator.comparingLong(CommonFunction::extractNumber))
+                        .thenComparing(ExcelSimilarityOutEntity::getRightDocName, Comparator.comparingLong(CommonFunction::extractNumber)))
                 .collect(Collectors.toList());
 
         // 排序简略结果
-        sortMaxResultList = sortMaxResultList.stream()
-                .sorted(Comparator.comparing(ExcelSimilarityOutEntity::getExcelCompareItemStr)
-                        .thenComparing(ExcelSimilarityOutEntity::getWeightedSimDouble, Comparator.reverseOrder()))
+        sortMaxResultList = sortMaxResultList.stream().sorted(
+                Comparator.comparing(ExcelSimilarityOutEntity::getExcelCompareItemStr)
+                        .thenComparing(ExcelSimilarityOutEntity::getLeftDocName, Comparator.comparingLong(CommonFunction::extractNumber))
+                        .thenComparing(ExcelSimilarityOutEntity::getRightDocName, Comparator.comparingLong(CommonFunction::extractNumber)))
                 .collect(Collectors.toList());
+
         // 去重超过相似度阈值名单
         plagiarizeEntityList = plagiarizeEntityList.stream().collect(
-                Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(PlagiarizeEntity::getDocName))), ArrayList::new));
-
+                Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(
+                        Comparator.comparing(
+                                PlagiarizeEntity::getDocName,
+                                Comparator.comparingLong(CommonFunction::extractNumber)))), ArrayList::new));
 
         System.out.println("相似度计算完成,开始导出excel文件,当前时间:" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
         EasyExcelUtil.writeXlsExcel(excelPath, detailList, sortMaxResultList, plagiarizeEntityList);

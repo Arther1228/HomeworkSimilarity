@@ -71,6 +71,11 @@ public class CompareOptimize {
 
         int detailSize = sumCount > 100000 ? 1 : sumCount;
 
+        //对所有文件，按照名称开始排序，方便调试
+        List<DocFileEntity> sortedAllDocEntityList = allDocEntityList.stream().sorted(Comparator.comparing(
+                DocFileEntity::getFileName,
+                Comparator.comparingLong(CommonFunction::extractNumber))).collect(Collectors.toList());
+
         // sheet1中详细所有数据
         List<SimilarityOutEntity> detailList = Collections.synchronizedList(new ArrayList<>(detailSize));
         // sheet2中简略结果数据
@@ -85,12 +90,12 @@ public class CompareOptimize {
         }
         CountDownLatch compareCdl = new CountDownLatch(allDocAbsolutePath.size() - 1);
         // 遍所有文档信息冒泡原理两两比较文档相似度
-        for (int i = 0; i < allDocEntityList.size() - 1; i++) {
+        for (int i = 0; i < sortedAllDocEntityList.size() - 1; i++) {
             int finalI = i;
             Runnable run = new Runnable() {
                 @Override
                 public void run() {
-                    getFinishDocCountModel1(pictureSimFlag, threshold, sumCount, allDocEntityList, detailList, sortMaxResultList, plagiarizeEntityList, finalI);
+                    getFinishDocCountModel1(pictureSimFlag, threshold, sumCount, sortedAllDocEntityList, detailList, sortMaxResultList, plagiarizeEntityList, finalI);
                     //计数器递减
                     compareCdl.countDown();
                 }
@@ -152,6 +157,7 @@ public class CompareOptimize {
         docLeftAllSimList = docLeftAllSimList.stream().sorted(Comparator.comparing(SimilarityOutEntity::getWeightedSimDouble,
                 Comparator.reverseOrder())).collect(Collectors.toList());
         System.out.println(docLeft.getAbsolutePath() + " 与其后的" + docLeftAllSimList.size() + "个文档比较完成,最大相似度:" + docLeftAllSimList.get(0).getWeightedSim());
+
         /*  求出每个文档的最大值，如果最大值有多个，只保留10个*/
         int m = 0;
         for (SimilarityOutEntity similarityOutEntity : docLeftAllSimList) {

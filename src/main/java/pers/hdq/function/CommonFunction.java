@@ -163,9 +163,6 @@ public class CommonFunction {
 
         return SimilarityOutEntity.builder()
                 .judgeResult(judgeResult)
-                .conSim(numFormat.format(conSim))
-                .avgPicSim(numFormat.format(avgPicSim))
-                .jaccardSim(numFormat.format(jaccardSim))
                 .leftDocName(docLeft.getAbsolutePath())
                 .weightedSim(numFormat.format(weightedSim))
                 .rightDocName(docRight.getAbsolutePath())
@@ -187,12 +184,30 @@ public class CommonFunction {
     public static void sortAndImportExcel(String excelPath, List<SimilarityOutEntity> detailList, List<SimilarityOutEntity> sortMaxResultList, List<PlagiarizeEntity> plagiarizeEntityList) {
 
         // 排序详细结果
-        detailList = detailList.stream().sorted(Comparator.comparing(SimilarityOutEntity::getLeftDocName, Comparator.naturalOrder())).collect(Collectors.toList());
+        detailList = detailList.stream().sorted(
+                Comparator.comparing(
+                        SimilarityOutEntity::getLeftDocName,
+                        Comparator.comparingLong(CommonFunction::extractNumber))
+                        .thenComparing(
+                                SimilarityOutEntity::getRightDocName,
+                                Comparator.comparingLong(CommonFunction::extractNumber))
+        ).collect(Collectors.toList());
+
         // 排序简略结果
-        sortMaxResultList = sortMaxResultList.stream().sorted(Comparator.comparing(SimilarityOutEntity::getLeftDocName, Comparator.naturalOrder())).collect(Collectors.toList());
+        sortMaxResultList = sortMaxResultList.stream().sorted(
+                Comparator.comparing(
+                        SimilarityOutEntity::getLeftDocName,
+                        Comparator.comparingLong(CommonFunction::extractNumber))
+                        .thenComparing(
+                                SimilarityOutEntity::getRightDocName,
+                                Comparator.comparingLong(CommonFunction::extractNumber))
+        ).collect(Collectors.toList());
+
         // 去重超过相似度阈值名单
         plagiarizeEntityList = plagiarizeEntityList.stream().collect(
-                Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(PlagiarizeEntity::getDocName))), ArrayList::new));
+                Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(
+                                PlagiarizeEntity::getDocName,
+                                Comparator.comparingLong(CommonFunction::extractNumber)))), ArrayList::new));
 
 
         System.out.println("相似度计算完成,开始导出excel文件,当前时间:" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
@@ -200,5 +215,10 @@ public class CommonFunction {
         System.err.println("相似度计算结果已存入：" + excelPath);
     }
 
+    public static long extractNumber(String fileName) {
+        // 提取文件名中的数字部分
+        String numberStr = fileName.replaceAll("[^0-9]", "");
+        return numberStr.isEmpty() ? 0 : Long.parseLong(numberStr);
+    }
 
 }

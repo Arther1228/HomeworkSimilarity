@@ -47,32 +47,11 @@ public class SimilarityOutEntity {
     @ColumnWidth(55)
     @ExcelProperty(value = "文件名2", index = 2)
     private String rightDocName;
-
-    /**
-     * jaccard相似度
-     **/
-    @ColumnWidth(10)
-    @ExcelProperty(value = "jaccard相似度", index = 3)
-    private String jaccardSim;
-
-    /**
-     * 余弦相似度
-     **/
-    @ColumnWidth(10)
-    @ExcelProperty(value = "余弦相似度", index = 4)
-    private String conSim;
-    /**
-     * 图片相似度
-     **/
-    @ColumnWidth(10)
-    @ExcelProperty(value = "图片相似度", index = 5)
-    private String avgPicSim;
-
     /**
      * 加权相似度
      **/
     @ColumnWidth(10)
-    @ExcelProperty(value = "加权相似度", index = 6)
+    @ExcelProperty(value = "加权相似度", index = 3)
     private String weightedSim;
 
     /**
@@ -81,9 +60,4 @@ public class SimilarityOutEntity {
     @ExcelIgnore
     private Double weightedSimDouble;
 
-    // /**
-    //  * 已比较完成的次数，多线程此值获取不便
-    //  **/
-    // @ExcelIgnore
-    // private Integer finishDocCount;
 }

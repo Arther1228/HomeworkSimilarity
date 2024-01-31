@@ -17,9 +17,8 @@ import java.util.*;
 public class CompareOptimizeTest {
 
     /*  需要相似度比对的路径*/
-    String path = "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123";
-
-    String filePath = "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\123.txt";
+    String wordFilePath = "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\wordtxt";
+    String excelFilePath = "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123";
 
     Map<ExcelCompareItem, List<String>> excelCompareItemAndExcelList = new HashMap<>();
 
@@ -41,6 +40,7 @@ public class CompareOptimizeTest {
 
     @Test
     public void getDocEntity() {
+        String filePath = "C:\\Users\\HP\\Desktop\\作业查重系统\\package\\123\\123.txt";
 
         DocFileEntity docEntity = CommonFunction.getDocEntity(filePath, false, true);
         System.out.println(docEntity);
@@ -52,29 +52,24 @@ public class CompareOptimizeTest {
 
         /*  获取开始时间*/
         long startTime = System.currentTimeMillis();
-        CompareOptimize.getSimilarityMode1(path, true, false, 0.9, true);
+        CompareOptimize.getSimilarityMode1(wordFilePath, true, false, 0.9, false);
         /*  获取结束时间*/
         long endTime = System.currentTimeMillis();
         /*  输出程序运行时间*/
         System.out.println("所有文档相似度计算完成，共耗时：" + (endTime - startTime) / 1000 + "s");
     }
 
-
     @Test
-    public void testToString() {
+    public void getExcelFileSimilarity() {
 
         String toString = ExcelCompareItem.toString(excelCompareItemAndExcelList);
         System.out.println(toString);
 
-    }
-
-    @Test
-    public void getExcelFileSimilarity() {
         /*  获取开始时间*/
         long startTime = System.currentTimeMillis();
 
-        ExcelCompareOptimize excelCompareOptimize = new ExcelCompareOptimize(true, true,0.9);
-        excelCompareOptimize.getExcelFileSimilarity(path, excelCompareItemAndExcelList);
+        ExcelCompareOptimize excelCompareOptimize = new ExcelCompareOptimize(true, false,0.9);
+        excelCompareOptimize.getExcelFileSimilarity(excelFilePath, excelCompareItemAndExcelList);
 
         /*  获取结束时间*/
         long endTime = System.currentTimeMillis();
