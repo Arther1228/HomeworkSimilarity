@@ -117,7 +117,7 @@ public class CompareOptimize {
 
         String excelPath = path + "\\相似度比对结果-".concat("智能分词-" + "相似度比对-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()).concat(".xlsx"));
         // 排序并导出excel
-        CommonFunction.sortAndImportExcel(excelPath, detailList, sortMaxResultList, plagiarizeEntityList);
+        CommonFunction.sortAndImportExcelMatrix(excelPath, detailList, sortedAllDocEntityList);
     }
 
     /**

@@ -41,12 +41,18 @@ public class SimilarityOutEntity {
     @ColumnWidth(55)
     @ExcelProperty(value = "文件名1", index = 1)
     private String leftDocName;
+
+    private String leftFileName;
+
     /**
      * 被比较的文件名
      **/
     @ColumnWidth(55)
     @ExcelProperty(value = "文件名2", index = 2)
     private String rightDocName;
+
+
+    private String rightFileName;
     /**
      * 加权相似度
      **/

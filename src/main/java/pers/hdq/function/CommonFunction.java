@@ -164,8 +164,10 @@ public class CommonFunction {
         return SimilarityOutEntity.builder()
                 .judgeResult(judgeResult)
                 .leftDocName(docLeft.getAbsolutePath())
+                .leftFileName(docLeft.getFileName())
                 .weightedSim(numFormat.format(weightedSim))
                 .rightDocName(docRight.getAbsolutePath())
+                .rightFileName(docRight.getFileName())
                 .weightedSimDouble(weightedSim)
                 .build();
 
@@ -212,6 +214,31 @@ public class CommonFunction {
 
         System.out.println("相似度计算完成,开始导出excel文件,当前时间:" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
         EasyExcelUtil.writeExcel(excelPath, detailList, sortMaxResultList, plagiarizeEntityList);
+        System.err.println("相似度计算结果已存入：" + excelPath);
+    }
+
+    /**
+     * 将几个sheet表数据排序去重并输出excel
+     *
+     * @param excelPath            excel绝对路径
+     * @param detailList           详细名单
+     * @author HuDaoquan
+     * @date 2022/6/15 14:14
+     **/
+    public static void sortAndImportExcelMatrix(String excelPath, List<SimilarityOutEntity> detailList, List<DocFileEntity> sortedAllDocEntityList) {
+
+        // 排序详细结果
+        detailList = detailList.stream().sorted(
+                Comparator.comparing(
+                        SimilarityOutEntity::getLeftDocName,
+                        Comparator.comparingLong(CommonFunction::extractNumber))
+                        .thenComparing(
+                                SimilarityOutEntity::getRightDocName,
+                                Comparator.comparingLong(CommonFunction::extractNumber))
+        ).collect(Collectors.toList());
+
+        System.out.println("相似度计算完成,开始导出excel文件,当前时间:" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+        EasyExcelUtil.writeExcelMatrix(excelPath, detailList, sortedAllDocEntityList);
         System.err.println("相似度计算结果已存入：" + excelPath);
     }
 
