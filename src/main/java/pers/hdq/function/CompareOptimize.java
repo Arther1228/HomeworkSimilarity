@@ -149,7 +149,7 @@ public class CompareOptimize {
             docLeftAllSimList.add(cellSimEntity);
         }
 
-        if (sumCount <= 100000) {
+        if (sumCount <= 1000000) {
             // 相似度实体加到详细结果中
             detailList.addAll(docLeftAllSimList);
         }
